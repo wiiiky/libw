@@ -20,6 +20,8 @@
 #ifndef __WL_M4_H__
 #define __WL_M4_H__
 
+#include "wlog.h"
+
 #define WL_LIKELY(x) __builtin_expect(!!(x),1)
 #define WL_UNLIKELY(x) __builtin_expect(!!(x),0)
 

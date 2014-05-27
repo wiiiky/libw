@@ -30,6 +30,14 @@ struct _WList {
 };
 
 /*
+ * @description: The type of function passed to w_list_foreach
+ * 
+ * @param data: the data of element
+ * @param user_data: user data passed to w_list foreach
+ */
+typedef void (*WForeachFunc) (void *data, void *user_data);
+
+/*
  * @description: create a new element with data
  * 
  * @param data: the data for the new element
@@ -44,6 +52,23 @@ WList *w_list_alloc(void *data);
  * @return: NULL.
  */
 WList *w_list_new();
+
+
+/*
+ * @description: get the first/last element of list
+ * 
+ * @param list: not NULL
+ */
+WList *w_list_first(WList * list);
+WList *w_list_last(WList * list);
+
+
+/*
+ * @description: the previous/next element
+ * @param list: not NULL
+ */
+#define w_list_next(list)   ((list)->next)
+#define w_list_prev(list)   ((list)->prev)
 
 /*
  * @description: append a new element with data to the end of the list.
@@ -62,6 +87,8 @@ WList *w_list_append(WList * list, void *data);
  * @param list: a pointer to a WList.
  * @param data: the data for the new element.
  * @param position: the position to insert.
+ *					if position <0, data is append to the end of list.
+ *					if position >=0, data is inserted into the position of list.
  * 
  * @return: the new start of the list
  */
