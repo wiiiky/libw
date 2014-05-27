@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@includedir@/liblibwl-0.1
+
+Name: liblibwl
+Description: Sample library created by Anjuta project wizard.
+Version: @VERSION@
+Requires: 
+Libs: -L${libdir} -llibwl
+Cflags: -I${includedir}

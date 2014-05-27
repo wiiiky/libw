@@ -1,0 +1,13 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+datarootdir=${prefix}/share
+datadir=${datarootdir}
+includedir=${prefix}/include/liblibwl-0.1
+
+Name: liblibwl
+Description: Sample library created by Anjuta project wizard.
+Version: 0.1
+Requires: 
+Libs: -L${libdir} -llibwl
+Cflags: -I${includedir}
