@@ -19,7 +19,7 @@
 #ifndef __WL_LIBWL_H__
 #define __WL_LIBWL_H__
 
-#include "wlog.h"
 #include "wlist.h"
+#include "wlog.h"
 
 #endif

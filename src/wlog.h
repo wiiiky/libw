@@ -38,4 +38,11 @@ typedef enum {
  */
 void wlog(WLogType type, const char *format, ...);
 
+/*
+ * macros
+ */
+#define WDEBUG(format, ...)  wlog(WLOG_DEBUG, format, __VA_ARGS__)
+#define WERROR(format, ...)  wlog(WLOG_ERROR, format, __VA_ARGS__)
+#define WVERBOSE(format, ...) wlog(WLOG_VERBOSE, format, __VA_ARGS__)
+
 #endif

@@ -93,6 +93,42 @@ WList *w_list_insert(WList * list, void *data, int position)
 	return list;
 }
 
+void w_list_foreach(WList * list, WForeachFunc func, void *user_data)
+{
+	WL_RETURN_IF_FAIL(list != NULL);
+
+	while (list) {
+		/* call function for each element */
+		func(list->data, user_data);
+		list = w_list_next(list);
+	}
+}
+
+void w_list_free(WList * list)
+{
+	WL_RETURN_IF_FAIL(list != NULL);
+
+	WList *lp = w_list_next(list);
+	while (list) {
+		free(list);
+		list = lp;
+		lp = w_list_next(list);
+	}
+}
+
+void w_list_free_full(WList * list, WListDestroy destroy)
+{
+	WL_RETURN_IF_FAIL(list != NULL);
+
+	WList *lp = w_list_next(list);
+	while (list) {
+		destroy(list->data);
+		free(list);
+		list = lp;
+		lp = w_list_next(list);
+	}
+}
+
 
 WList *w_list_alloc(void *data)
 {

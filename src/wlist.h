@@ -30,14 +30,6 @@ struct _WList {
 };
 
 /*
- * @description: The type of function passed to w_list_foreach
- * 
- * @param data: the data of element
- * @param user_data: user data passed to w_list foreach
- */
-typedef void (*WForeachFunc) (void *data, void *user_data);
-
-/*
  * @description: create a new element with data
  * 
  * @param data: the data for the new element
@@ -93,6 +85,41 @@ WList *w_list_append(WList * list, void *data);
  * @return: the new start of the list
  */
 WList *w_list_insert(WList * list, void *data, int position);
+
+/*
+ * @description: The type of function passed to w_list_foreach
+ * 
+ * @param data: the data of element
+ * @param user_data: user data passed to w_list foreach
+ */
+typedef void (*WForeachFunc) (void *data, void *user_data);
+/*
+ * @description: call a function for each element in the list
+ * 
+ * @param list: the list
+ * @param func: the function to call for each element's data
+ * @param user_data: the user data passed to the function
+ */
+void w_list_foreach(WList * list, WForeachFunc func, void *user_data);
+
+/*
+ * @description: free a list
+ */
+void w_list_free(WList * list);
+
+/*
+ * @description: the type of function passed to w_list_free_full
+ * 
+ * @param data: the data of element
+ */
+typedef void (*WListDestroy) (void *data);
+/*
+ * @description: free a list,and call destroy on every element
+ * 
+ * @param list: the list
+ * @param destroy: the destroy function
+ */
+void w_list_free_full(WList * list, WListDestroy destroy);
 
 
 #endif

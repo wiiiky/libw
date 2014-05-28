@@ -3,9 +3,11 @@ libwl
 
 
 ###Introduce
-Libwl is my C library. It does not depend on any third-pary library.
-
+Libwl is my C library. It does not depend on any third-pary library. 
 Libwl implements some simple data structure and algorithm.
+
+###XXX
+Please be aware that libwl is not tested fully. You may take a risk if you choose to use it in your project.
 
 ###COPYRIGHT
 Copyright (C) 2014  Wiky L
