@@ -46,6 +46,8 @@ char *w_strndup(const char *str, int n);
  * @params : see printf document for details
  * 
  * @return: a new allocated string or NULL if failed
+ *			XXX the length of return string
+ *				must be less than 1024.
  */
 char *w_strdup_printf(const char *format, ...);
 
