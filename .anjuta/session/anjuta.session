@@ -3,7 +3,7 @@ Maximized=1
 Geometry=1366x744+0+24
 
 [File Loader]
-Files=../../src/libwl.h#22%%%../../src/wlist.h#122%%%../../src/wlist.c#125%%%../../src/m4.h#23%%%../../src/wlog.h#27%%%../../src/wlog.c#23
+Files=../../src/libwl.h#22%%%../../src/wlist.h#122%%%../../src/wlist.c#125%%%../../src/m4.h#41%%%../../src/wlog.h#27%%%../../src/wlog.c#23%%%../../src/wstring.h#38%%%../../src/wstring.c#23
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
@@ -16,9 +16,6 @@ Working directories=../../../libwl
 Shortcut=libwl//src//libwl.la
 Expand=libwl%%%libwl//src%%%libwl//src//include%%%libwl//src//libwl.la%%%libwl//src//pkgconfig%%%libwl//dist_doc
 
-[Debugger]
-Stop at beginning=2
-
 [Build]
 Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized%%%1:MinGW32:MinGW32
 Selected Configuration=Debug
@@ -26,3 +23,6 @@ BuildArgs/Default=--enable-maintainer-mode
 BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0'
 BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
+
+[Debugger]
+Stop at beginning=2

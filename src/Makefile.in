@@ -123,7 +123,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
 	"$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libwl_la_DEPENDENCIES =
-am_libwl_la_OBJECTS = wlist.lo wlog.lo
+am_libwl_la_OBJECTS = wlist.lo wlog.lo wstring.lo
 libwl_la_OBJECTS = $(am_libwl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -321,7 +321,8 @@ AM_CFLAGS = \
 lib_LTLIBRARIES = libwl.la
 libwl_la_SOURCES = \
 	wlist.c \
-	wlog.c
+	wlog.c \
+	wstring.c
 
 libwl_la_LDFLAGS = 
 libwl_la_LIBADD = 
@@ -329,7 +330,8 @@ include_HEADERS = \
 	libwl.h \
 	wlist.h \
 	m4.h \
-	wlog.h
+	wlog.h \
+	wstring.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libwl-0.1.pc
@@ -419,6 +421,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wlist.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wlog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wstring.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

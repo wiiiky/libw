@@ -16,28 +16,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
+#include "wstring.h"
+#include "m4.h"
+#include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
 
-#ifndef __WL_M4_H__
-#define __WL_M4_H__
+char *w_strdup(const char *str)
+{
+	WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
+	return strdup(str);
+}
 
-#include "wlog.h"
+char *w_strndup(const char *str, int n)
+{
+	WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
+	if (n < 0) {
+		return strdup(str);
+	}
+	return strndup(str, n);
+}
 
-#define WL_LIKELY(x) __builtin_expect(!!(x),1)
-#define WL_UNLIKELY(x) __builtin_expect(!!(x),0)
+char *w_strdup_printf(const char *format, ...)
+{
+	WL_RETURN_VAL_IF_FAIL(format != NULL, NULL);
 
+	va_list vl;
+	char buf[LARGE_BUF];
 
-#define STMT_START  do{
-#define STMT_EDN	}while(0)
+	va_start(vl, format);
 
-#define WL_RETURN_VAL_IF_FAIL(expr,val) STMT_START if(!(expr))\
-							{return (val);} STMT_EDN
+	vsnprintf(buf, LARGE_BUF, format, vl);
 
-#define WL_RETURN_IF_FAIL(expr) STMT_START if(!(expr))\
-							{return;} STMT_EDN
+	va_end(vl);
 
-#define LARGE_BUF  (1024)
-#define MEDIUM__BUF   (256)
-#define SMALL_BUF   (64)
-#define TINY_BUF	(16)
-
-#endif
+	return w_strdup(buf);
+}

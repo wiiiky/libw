@@ -15,29 +15,40 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
+#ifndef __WL_WSTRING_H__
+#define __WL_WSTRING_H__
+
+/*
+ * string functions
+ */
+
+/*
+ * @description: duplicate a string
+ * 
+ * @param str: the source string
+ * @return: a new allocated string or NULL if failed
+ */
+char *w_strdup(const char *str);
+
+/*
+ * @param n: size to duplicate
+ * 
+ * if n<0 return total string duplicate
+ * if n==0 return a new allocated empty string ""
+ * ...
+ */
+char *w_strndup(const char *str, int n);
 
 
-#ifndef __WL_M4_H__
-#define __WL_M4_H__
+/*
+ * @description: create a formated string
+ * 
+ * @params : see printf document for details
+ * 
+ * @return: a new allocated string or NULL if failed
+ */
+char *w_strdup_printf(const char *format, ...);
 
-#include "wlog.h"
 
-#define WL_LIKELY(x) __builtin_expect(!!(x),1)
-#define WL_UNLIKELY(x) __builtin_expect(!!(x),0)
-
-
-#define STMT_START  do{
-#define STMT_EDN	}while(0)
-
-#define WL_RETURN_VAL_IF_FAIL(expr,val) STMT_START if(!(expr))\
-							{return (val);} STMT_EDN
-
-#define WL_RETURN_IF_FAIL(expr) STMT_START if(!(expr))\
-							{return;} STMT_EDN
-
-#define LARGE_BUF  (1024)
-#define MEDIUM__BUF   (256)
-#define SMALL_BUF   (64)
-#define TINY_BUF	(16)
 
 #endif

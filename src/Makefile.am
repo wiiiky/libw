@@ -16,7 +16,8 @@ lib_LTLIBRARIES = libwl.la
 
 libwl_la_SOURCES = \
 	wlist.c \
-	wlog.c
+	wlog.c \
+	wstring.c
 
 libwl_la_LDFLAGS = 
 
@@ -28,7 +29,8 @@ include_HEADERS = \
 	libwl.h \
 	wlist.h \
 	m4.h \
-	wlog.h
+	wlog.h \
+	wstring.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libwl-0.1.pc
