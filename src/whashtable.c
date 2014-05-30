@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 #include "whashtable.h"
+#include <stdlib.h>
 
 WHashTable *w_hash_table_new()
 {
