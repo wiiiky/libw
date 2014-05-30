@@ -122,4 +122,20 @@ typedef void (*WListDestroy) (void *data);
 void w_list_free_full(WList * list, WListDestroy destroy);
 
 
+/*
+ * @description: the function to compare data
+ * 
+ * @return: if a > b, return positive,
+ *			if a == b, return zero,
+ *			if a < b, return negative
+ */
+typedef int (*WCompareFunc) (const void *a, const void *b);
+/*
+ * @description: find the element with data that equals to b
+ * 
+ * @return: NULL if not found
+ */
+WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b);
+
+
 #endif

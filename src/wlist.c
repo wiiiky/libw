@@ -110,9 +110,9 @@ void w_list_free(WList * list)
 
 	WList *lp = w_list_next(list);
 	while (list) {
+		lp = w_list_next(list);
 		free(list);
 		list = lp;
-		lp = w_list_next(list);
 	}
 }
 
@@ -122,11 +122,24 @@ void w_list_free_full(WList * list, WListDestroy destroy)
 
 	WList *lp = w_list_next(list);
 	while (list) {
+		lp = w_list_next(list);
 		destroy(list->data);
 		free(list);
 		list = lp;
-		lp = w_list_next(list);
 	}
+}
+
+WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b)
+{
+	WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+
+	while (list) {
+		if (func(list->data, b) == 0) {
+			return list;
+		}
+		list = w_list_next(list);
+	}
+	return NULL;
 }
 
 

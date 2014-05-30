@@ -3,7 +3,7 @@ Maximized=1
 Geometry=1366x744+0+24
 
 [File Loader]
-Files=../../src/wstring.h#51%%%../../src/m4.h#1%%%../../src/whashtable.c#22%%%../../src/whashtable.h#28
+Files=../../src/whashtable.c#194%%%../../src/whashtable.h#85%%%../../src/wlist.h#138%%%../../src/wlist.c#123
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
