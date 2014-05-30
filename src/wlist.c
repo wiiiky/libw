@@ -142,6 +142,39 @@ WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b)
 	return NULL;
 }
 
+WList *w_list_find(WList * list, void *data)
+{
+	WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+	while (list) {
+		if (list->data == data) {
+			return list;
+		}
+		list = w_list_next(list);
+	}
+	return NULL;
+}
+
+WList *w_list_remove(WList * list, void *data)
+{
+	WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+
+	WList *rm = w_list_find(list, data);
+	if (rm == NULL) {			/* not find */
+		return list;
+	}
+	WList *prev = w_list_prev(rm);
+	WList *next = w_list_next(rm);
+	if (prev == NULL) {
+		free(rm);
+		return next;
+	}
+	prev->next = next;
+	if (next != NULL) {
+		next->prev = prev;
+	}
+	free(rm);
+	return list;
+}
 
 WList *w_list_alloc(void *data)
 {

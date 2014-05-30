@@ -138,4 +138,21 @@ typedef int (*WCompareFunc) (const void *a, const void *b);
 WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b);
 
 
+/*
+ * @return: the element that contains data
+ */
+WList *w_list_find(WList * list, void *data);
+
+
+/*
+ * @description: remove an element from list
+ *				 this function does not free data.
+ * 
+ * @param data: the data of element
+ * 
+ * @return: the new start of list
+ */
+WList *w_list_remove(WList * list, void *data);
+
+
 #endif

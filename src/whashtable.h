@@ -69,6 +69,17 @@ WHashTable *w_hash_table_new(unsigned short i,
  */
 void w_hash_table_insert(WHashTable * h, void *key, void *value);
 
+/*
+ * @description: Remove a node whoes key matches.
+ *				 this function does not free key and value.
+ * 
+ * @param key: the key to remove.
+ */
+void w_hash_table_remove(WHashTable * h, void *key);
+
+/* remove and free */
+void w_hash_table_remove_full(WHashTable * h, void *key);
+
 
 /*
  * @description: find the value associated to to key

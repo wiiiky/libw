@@ -28,6 +28,10 @@ int main(int argc, char *argv[])
 	printf("what:%s\n", value);
 	value = w_hash_table_find(h, "what!");
 	printf("what!:%s\n", value);
+	printf("===============================\n");
+
+	w_hash_table_remove_full(h,"good");
+	w_hash_table_print(h);
 
 	w_hash_table_free_full(h);
 	return 0;

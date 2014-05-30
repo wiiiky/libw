@@ -185,6 +185,33 @@ void w_hash_table_insert(WHashTable * h, void *key, void *value)
 	}
 }
 
+static inline void w_hash_table_remove_internal(WHashTable * h, void *key,
+												WKeyDestroyFunc key_func,
+												WValueDestroyFunc
+												value_func)
+{
+	WL_RETURN_IF_FAIL(h != NULL && key != NULL);
+
+	uint32_t index = w_hash_table_index(h, key);
+
+	WHashTableNode *node = w_hash_table_find_node(h, index, key);
+
+	if (node) {
+		h->buckets[index] = w_list_remove(h->buckets[index], node);
+		w_hash_table_node_free(node, key_func, value_func);
+	}
+}
+
+void w_hash_table_remove(WHashTable * h, void *key)
+{
+	w_hash_table_remove_internal(h, key, NULL, NULL);
+}
+
+void w_hash_table_remove_full(WHashTable * h, void *key)
+{
+	w_hash_table_remove_internal(h, key, h->key_func, h->value_func);
+}
+
 void *w_hash_table_find(WHashTable * h, void *key)
 {
 	WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, NULL);
@@ -253,23 +280,6 @@ void w_hash_table_free(WHashTable * h)
 }
 
 
-/* for test */
-void w_hash_table_print(WHashTable * h)
-{
-	WL_RETURN_IF_FAIL(h != NULL);
-
-	uint32_t i;
-	for (i = 0; i < h->size; i++) {
-		WList *list = h->buckets[i];
-		while (list) {
-			WHashTableNode *node = list->data;
-			printf("%s:%s\n", (char *) node->key, (char *) node->value);
-			list = w_list_next(list);
-		}
-	}
-}
-
-
 unsigned int w_str_hash(const void *p)
 {
 	const char *s = (const char *) p;
@@ -284,4 +294,20 @@ unsigned int w_str_hash(const void *p)
 int w_str_equal(const void *s1, const void *s2)
 {
 	return strcmp((const char *) s1, (const char *) s2);
+}
+
+/* for test */
+void w_hash_table_print(WHashTable * h)
+{
+	WL_RETURN_IF_FAIL(h != NULL);
+
+	uint32_t i;
+	for (i = 0; i < h->size; i++) {
+		WList *list = h->buckets[i];
+		while (list) {
+			WHashTableNode *node = list->data;
+			printf("%s:%s\n", (char *) node->key, (char *) node->value);
+			list = w_list_next(list);
+		}
+	}
 }
