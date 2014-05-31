@@ -279,6 +279,7 @@ static void w_hash_table_free_internal(WHashTable * h,
 		}
 	}
 	free(h->buckets);
+	w_list_free(h->keys);
 	free(h);
 }
 

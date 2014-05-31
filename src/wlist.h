@@ -156,5 +156,10 @@ WList *w_list_find(WList * list, void *data);
  */
 WList *w_list_remove(WList * list, void *data);
 
+/*
+ * remove and free data
+ */
+WList *w_list_remove_full(WList * list, void *data, WListDestroy destroy);
+
 
 #endif

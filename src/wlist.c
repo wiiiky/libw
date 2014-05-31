@@ -154,13 +154,17 @@ WList *w_list_find(WList * list, void *data)
 	return NULL;
 }
 
-WList *w_list_remove(WList * list, void *data)
+static WList *w_list_remove_internal(WList * list, void *data,
+									 WListDestroy destroy)
 {
 	WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
 	WList *rm = w_list_find(list, data);
 	if (rm == NULL) {			/* not find */
 		return list;
+	}
+	if (destroy) {
+		destroy(rm->data);
 	}
 	WList *prev = w_list_prev(rm);
 	WList *next = w_list_next(rm);
@@ -174,6 +178,16 @@ WList *w_list_remove(WList * list, void *data)
 	}
 	free(rm);
 	return list;
+}
+
+WList *w_list_remove(WList * list, void *data)
+{
+	return w_list_remove_internal(list, data, NULL);
+}
+
+WList *w_list_remove_full(WList * list, void *data, WListDestroy destroy)
+{
+	return w_list_remove_internal(list, data, destroy);
 }
 
 WList *w_list_alloc(void *data)
