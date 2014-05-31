@@ -139,7 +139,9 @@ WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b);
 
 
 /*
- * @return: the element that contains data
+ * @description: find the element in the given list that contains data.
+ * 
+ * @return: the element or NULL if fail.
  */
 WList *w_list_find(WList * list, void *data);
 

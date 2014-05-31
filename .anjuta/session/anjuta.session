@@ -2,15 +2,15 @@
 Maximized=1
 Geometry=1366x744+0+24
 
-[Execution]
-Run in terminal=2
-Working directories=../../../libwl
-
 [File Loader]
-Files=../../src/whashtable.c#229%%%../../src/whashtable.h#81%%%../../src/wlist.h#149%%%../../src/wlist.c#125
+Files=../../src/whashtable.c#18%%%../../src/whashtable.h#29%%%../../src/wlist.h#144%%%../../src/wlist.c#125%%%../../src/m4.h#42
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Execution]
+Run in terminal=2
+Working directories=../../../libwl
 
 [Project Manager]
 Shortcut=libwl//src//libwl.la

@@ -17,6 +17,7 @@
  */
 #ifndef __WL_WHASHTABLE_H__
 #define __WL_WHASHTABLE_H__
+#include "wlist.h"
 /*
  * hash table
  */
@@ -88,13 +89,19 @@ void w_hash_table_remove_full(WHashTable * h, void *key);
  */
 void *w_hash_table_find(WHashTable * h, void *key);
 
+
 /*
- * @description: find the node that make node_func return 0
- * 
- * @return: the value 
+ * @description: call node_func on every element in the hash table.
  */
-void *w_hash_table_find_custom(WHashTable * h, WNodeFunc node_func,
-							   void *data);
+void w_hash_table_foreach(WHashTable * h, WNodeFunc node_func, void *data);
+
+/*
+ * @description: get all the keys in the hash table
+ * 
+ * @return: the list of keys, this list is owned by hash table,
+ *			should not be modified.
+ */
+WList *w_hash_table_get_keys(WHashTable * h);
 
 
 /*
@@ -113,12 +120,19 @@ void w_hash_table_free(WHashTable * h);
 /*
  * hash and equal functions
  */
+
+/* string */
 unsigned int w_str_hash(const void *p);
 int w_str_equal(const void *s1, const void *s2);
+
+/* int */
+unsigned int w_int_hash(const void *p);
+int w_int_equal(const void *p1, const void *p2);
 
 
 
 void w_hash_table_print(WHashTable * h);
+void w_hash_table_print_int(WHashTable * h);
 
 
 
