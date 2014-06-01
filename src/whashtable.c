@@ -150,7 +150,7 @@ static inline uint32_t w_hash_table_index(WHashTable * h, void *key)
 }
 
 /*
- * return the node of given key
+ * return the node that contains given key
  */
 static inline WHashTableNode *w_hash_table_find_node(WHashTable * h,
 													 void *key)
@@ -175,7 +175,7 @@ static inline WHashTableNode *w_hash_table_find_node(WHashTable * h,
 			node = data;
 			break;
 		}
-		bucket = w_list_new(bucket);
+		bucket = w_list_next(bucket);
 	}
 	return node;
 }

@@ -48,5 +48,21 @@ int main(int argc, char *argv[])
 	printf("\n");
 	w_hash_table_print_int(h);
 
+	h=w_hash_table_new(2,w_str_hash,w_str_equal,NULL,NULL);
+	w_hash_table_insert(h,"linux","what?");
+	w_hash_table_insert(h,"link","C");
+	w_hash_table_insert(h,"well","done");
+	w_hash_table_insert(h,"link","CCCC");
+	w_hash_table_insert(h,"very","GOOD");
+	w_hash_table_remove(h,"linux");
+	WList *keys=w_hash_table_get_keys(h);
+	printf("\n");
+	while(keys){
+		value=w_hash_table_find(h,keys->data);
+		printf("%s:%s\n",(char*)keys->data,value);
+		keys=w_list_next(keys);
+	}
+	w_hash_table_free_full(h);
+
 	return 0;
 }
