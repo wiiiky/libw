@@ -19,7 +19,9 @@
 #define __WL_WHASHTABLE_H__
 #include "wlist.h"
 /*
- * hash table
+ * WHashTable, a general hash table.
+ * Remember that WHashTable never copys key or value, which means they should 
+ * be accessed for the lifetime of WHashTable
  */
 
 /*
@@ -63,23 +65,38 @@ WHashTable *w_hash_table_new(unsigned short i,
 /*
  * @description: Insert a new key:value into hash table
  *				 if the key already exists, just update its value
- *				 if you want to insert a same key , use w_hash_table_append
  * @param h: the hash table
  * @param key: the key
  * @param value: the value
+ * 
+ * @return: 0 if inserted, 1 if updated, -1 if fail
  */
-void w_hash_table_insert(WHashTable * h, void *key, void *value);
+int w_hash_table_insert(WHashTable * h, void *key, void *value);
+
+/*
+ * @description: Update the value associated to the given key,
+ *				if not exists, do nothing
+ * 
+ * @param h: the hash table
+ * @param key: the key
+ * @param value: the new value of key.
+ * 
+ * @return: 0 if updated, -1 if key not found
+ */
+int w_hash_table_update(WHashTable * h, void *key, void *value);
 
 /*
  * @description: Remove a node whoes key matches.
  *				 this function does not free key and value.
  * 
  * @param key: the key to remove.
+ * 
+ * @return: 0 if removed, -1 if key not found.
  */
-void w_hash_table_remove(WHashTable * h, void *key);
+int w_hash_table_remove(WHashTable * h, void *key);
 
 /* remove and free */
-void w_hash_table_remove_full(WHashTable * h, void *key);
+int w_hash_table_remove_full(WHashTable * h, void *key);
 
 
 /*
@@ -128,12 +145,6 @@ int w_str_equal(const void *s1, const void *s2);
 /* int */
 unsigned int w_int_hash(const void *p);
 int w_int_equal(const void *p1, const void *p2);
-
-
-
-void w_hash_table_print(WHashTable * h);
-void w_hash_table_print_int(WHashTable * h);
-
 
 
 #endif

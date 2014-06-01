@@ -16,14 +16,12 @@ int main(int argc, char *argv[])
 	w_hash_table_insert(h, "what", w_strdup("is it"));
 	w_hash_table_insert(h, "abc", w_strdup("123"));
 	w_hash_table_insert(h, "good", w_strdup("bad"));
-	w_hash_table_print(h);
 
 	printf("============================\n");
 
 	w_hash_table_insert(h, "good", w_strdup("no!!!"));
 	w_hash_table_insert(h, "abc", w_strdup("321"));
 	w_hash_table_insert(h, "doyou", w_strdup("loveme"));
-	w_hash_table_print(h);
 
 	printf("============================\n");
 	char *value;
@@ -36,7 +34,6 @@ int main(int argc, char *argv[])
 	printf("===============================\n");
 
 	w_hash_table_remove_full(h,"good");
-	w_hash_table_print(h);
 	w_hash_table_free_full(h);
 
 	h=w_hash_table_new(4,w_int_hash,w_int_equal,NULL,NULL);
@@ -46,7 +43,6 @@ int main(int argc, char *argv[])
 	w_hash_table_remove(h,(void*)(long)234);
 	w_hash_table_foreach(h,node_func,NULL);
 	printf("\n");
-	w_hash_table_print_int(h);
 
 	h=w_hash_table_new(2,w_str_hash,w_str_equal,NULL,NULL);
 	w_hash_table_insert(h,"linux","what?");

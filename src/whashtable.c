@@ -118,7 +118,7 @@ WHashTable *w_hash_table_new(unsigned short i,
 							 WValueDestroyFunc value_func)
 {
 	unsigned short index;
-	/* I found that malloc(sizeof(char*)*(1<<31)) will fail
+	/* I found that malloc(sizeof(char*)*(1<<31)) will fail in my system
 	   but malloc(sizeof(char*)*(1<<30)) not */
 	if (i >= 31) {
 		index = W_HASH_TABLE_DEFAULT_INDEX;
@@ -180,9 +180,9 @@ static inline WHashTableNode *w_hash_table_find_node(WHashTable * h,
 	return node;
 }
 
-void w_hash_table_insert(WHashTable * h, void *key, void *value)
+int w_hash_table_insert(WHashTable * h, void *key, void *value)
 {
-	WL_RETURN_IF_FAIL(h != NULL && key != NULL);
+	WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
 
 	WHashTableNode *node = w_hash_table_find_node(h, key);
 	if (node == NULL) {			/* if not exists, insert */
@@ -190,20 +190,37 @@ void w_hash_table_insert(WHashTable * h, void *key, void *value)
 		node = w_hash_table_node_new(key, value);
 		h->buckets[index] = w_list_append(h->buckets[index], node);
 		h->keys = w_list_append(h->keys, key);
-	} else {					/* if already exists, update */
-		if (h->value_func) {	/* free old value */
-			h->value_func(node->value);
-		}
-		node->value = value;
+		return 0;
 	}
+	/* if already exists, update */
+	if (h->value_func) {		/* free old value */
+		h->value_func(node->value);
+	}
+	node->value = value;
+	return 1;
 }
 
-static inline void w_hash_table_remove_internal(WHashTable * h, void *key,
-												WKeyDestroyFunc key_func,
-												WValueDestroyFunc
-												value_func)
+int w_hash_table_update(WHashTable * h, void *key, void *value)
 {
-	WL_RETURN_IF_FAIL(h != NULL && key != NULL);
+	WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
+
+	WHashTableNode *node = w_hash_table_find_node(h, key);
+	if (node == NULL) {			/* not found */
+		return -1;
+	}
+	if (h->value_func) {		/* free old value */
+		h->value_func(node->value);
+	}
+	node->value = value;
+	return 0;
+}
+
+static inline int w_hash_table_remove_internal(WHashTable * h, void *key,
+											   WKeyDestroyFunc key_func,
+											   WValueDestroyFunc
+											   value_func)
+{
+	WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
 
 	WHashTableNode *node = w_hash_table_find_node(h, key);
 
@@ -212,17 +229,22 @@ static inline void w_hash_table_remove_internal(WHashTable * h, void *key,
 		h->keys = w_list_remove(h->keys, key);
 		h->buckets[index] = w_list_remove(h->buckets[index], node);
 		w_hash_table_node_free(node, key_func, value_func);
+		return 0;
 	}
+	return -1;
 }
 
-void w_hash_table_remove(WHashTable * h, void *key)
+/* remove but not free key or value */
+int w_hash_table_remove(WHashTable * h, void *key)
 {
-	w_hash_table_remove_internal(h, key, NULL, NULL);
+	return w_hash_table_remove_internal(h, key, NULL, NULL);
 }
 
-void w_hash_table_remove_full(WHashTable * h, void *key)
+/* remove and free key and value */
+int w_hash_table_remove_full(WHashTable * h, void *key)
 {
-	w_hash_table_remove_internal(h, key, h->key_func, h->value_func);
+	return w_hash_table_remove_internal(h, key, h->key_func,
+										h->value_func);
 }
 
 void *w_hash_table_find(WHashTable * h, void *key)
@@ -319,35 +341,4 @@ unsigned int w_int_hash(const void *p)
 int w_int_equal(const void *p1, const void *p2)
 {
 	return (int) (p1 - p2);
-}
-
-/* for test */
-void w_hash_table_print(WHashTable * h)
-{
-	WL_RETURN_IF_FAIL(h != NULL);
-
-	uint32_t i;
-	for (i = 0; i < h->size; i++) {
-		WList *list = h->buckets[i];
-		while (list) {
-			WHashTableNode *node = list->data;
-			printf("%s:%s\n", (char *) node->key, (char *) node->value);
-			list = w_list_next(list);
-		}
-	}
-}
-
-void w_hash_table_print_int(WHashTable * h)
-{
-	WL_RETURN_IF_FAIL(h != NULL);
-
-	uint32_t i;
-	for (i = 0; i < h->size; i++) {
-		WList *list = h->buckets[i];
-		while (list) {
-			WHashTableNode *node = list->data;
-			printf("%d:%d\n", (int) node->key, (int) node->value);
-			list = w_list_next(list);
-		}
-	}
 }
