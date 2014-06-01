@@ -21,6 +21,7 @@
 
 #include "wstring.h"
 #include "wlist.h"
+#include "wio.h"
 #include "wlog.h"
 
 #endif

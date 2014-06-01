@@ -15,47 +15,31 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
-#ifndef __WL_WSTRING_H__
-#define __WL_WSTRING_H__
+#ifndef __WL_WIO_H__
+#define __WL_WIO_H__
 
 /*
- * string and memory functions
+ * wraper of read()
  */
-
-
-#define w_malloc(size) malloc(size)
-#define w_free(ptr) free(ptr)
-#define w_realloc(ptr,size) realloc(ptr,size)
+int w_read(int fd, void *buf, unsigned int count);
 
 /*
- * @description: duplicate a string
- * 
- * @param str: the source string
- * @return: a new allocated string or NULL if failed
+ * wraper of write() 
  */
-char *w_strdup(const char *str);
-
-/*
- * @param n: size to duplicate
- * 
- * if n<0 return total string duplicate
- * if n==0 return a new allocated empty string ""
- * ...
- */
-char *w_strndup(const char *str, int n);
+int w_write(int fd, void *buf, unsigned int count);
 
 
 /*
- * @description: create a formated string
- * 
- * @params : see printf document for details
- * 
- * @return: a new allocated string or NULL if failed
- *			XXX the length of return string
- *				must be less than 1024.
+ * @description: read a line from file
+ *				this function will cache data
+ *
+ * @param fd: the file descriptor
+ * @param: the buffer 
+ * @param: the buffer size
+ *
+ * @return: the size read
  */
-char *w_strdup_printf(const char *format, ...);
-
+int w_readline(int fd, void *buf, unsigned int count);
 
 
 #endif
