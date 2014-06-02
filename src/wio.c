@@ -74,15 +74,10 @@ int w_is_fd_fifo(int fd)
 	return w_is_fd_type_internal(fd, S_IFIFO);
 }
 
-int w_is_fd_ok_to_read(int fd)
-{
-	/* TODO */
-	return 1;
-}
-
 /************************readline***********************************/
 typedef struct {
 	unsigned int size;			/* total size */
+	unsigned int start;			/* the start position of buffer */
 	unsigned int len;			/* valid buffer size,including \0 */
 	char *buf;
 } ReadlineBuf;
@@ -97,8 +92,8 @@ ReadlineBuf *readline_buf_init()
 	ReadlineBuf *buf = w_malloc(sizeof(ReadlineBuf));
 	buf->size = DEFAULT_BUFSIZE;
 	buf->buf = w_malloc(sizeof(char) * DEFAULT_BUFSIZE);
-	buf->buf[0] = '\0';
 	buf->len = 0;
+	buf->start = 0;
 	return buf;
 }
 
@@ -115,23 +110,21 @@ static void readline_buf_free(ReadlineBuf * buf)
 }
 
 /*
- * move buf forward size bytes
+ * move data to the header of buffer.
  */
-static void readline_buf_forward(ReadlineBuf * buf, int size)
+static void readline_buf_forward(ReadlineBuf * lbuf)
 {
-	if (size <= 0) {
-		return;
-	} else if (size >= buf->len) {
-		buf->len = 0;
-		buf->buf[0] = '\0';
+	if (lbuf->start <= 0) {
 		return;
 	}
-	/* size must be less than buf->len */
+
 	int i, j;
-	for (i = size, j = 0; i < buf->len; i++, j++) {
-		buf->buf[j] = buf->buf[i];
+	int total = lbuf->start + lbuf->len;
+	for (i = lbuf->start, j = 0; i < total; i++, j++) {
+		lbuf->buf[j] = lbuf->buf[i];
 	}
-	buf->len = buf->len - size;
+	lbuf->len = lbuf->len;
+	lbuf->start = 0;
 }
 
 /*
@@ -147,6 +140,13 @@ static void readline_buf_make_space(ReadlineBuf * lbuf)
 {
 	if (lbuf->len >= lbuf->size - 1) {
 		readline_buf_enlarge(lbuf);
+	} else if (lbuf->len >= lbuf->size / 2
+			   || lbuf->start >= lbuf->size / 2) {
+		/* if current length is larger than half of total size 
+		 * or the current start position is larger than half of total size
+		 * we move the data to the header of buffer
+		 */
+		readline_buf_forward(lbuf);
 	}
 }
 
@@ -154,15 +154,17 @@ static void readline_buf_make_space(ReadlineBuf * lbuf)
 static void readline_buf_copydata(ReadlineBuf * lbuf, void *buf,
 								  unsigned int count)
 {
-	strncpy(buf, lbuf->buf, count);
+	strncpy(buf, lbuf->buf + lbuf->start, count);
 	((char *) buf)[count] = '\0';
-	readline_buf_forward(lbuf, count);
+	lbuf->start += count;
+	lbuf->len -= count;
 }
 
 static char *readline_buf_findline(ReadlineBuf * lbuf)
 {
 	int i;
-	for (i = 0; i < lbuf->len; i++) {
+	int total = lbuf->start + lbuf->len;
+	for (i = lbuf->start; i < total; i++) {
 		if (lbuf->buf[i] == '\n') {
 			return lbuf->buf + i;
 		}
@@ -182,7 +184,7 @@ static int readline_buf_copyline(ReadlineBuf * lbuf, void *buf,
 	if (line == NULL) {
 		return 0;
 	}
-	unsigned int len = line - lbuf->buf + 1;
+	unsigned int len = line - (lbuf->buf + lbuf->start) + 1;
 	unsigned int move = len < count ? len : count - 1;
 	readline_buf_copydata(lbuf, buf, move);
 	return move;
@@ -230,22 +232,11 @@ int w_readline(int fd, void *buf, unsigned int count)
 		return rd;
 	}
 
-	if (!w_is_fd_ok_to_read(fd)) {
-		/* 
-		 * have to check if fd is still open to read here.
-		 * if fd is already closed, but we call read on fd.
-		 * Will cause SIGPIPE, which interrupts program by default.
-		 * 
-		 * if fd is already closed, just return buffer.
-		 */
-		return readline_buf_copyall(lbuf, buf, count);
-	}
-
 	readline_buf_make_space(lbuf);
 	rd = 0;
 	while ((rd =
-			w_read(fd, lbuf->buf + lbuf->len,
-				   lbuf->size - lbuf->len)) > 0) {
+			w_read(fd, lbuf->buf + lbuf->start + lbuf->len,
+				   lbuf->size - (lbuf->len + lbuf->start))) >= 0) {
 		if (rd == 0) {
 			/* EOF, return all buffer */
 			return readline_buf_copyall(lbuf, buf, count);
@@ -258,4 +249,20 @@ int w_readline(int fd, void *buf, unsigned int count)
 	}
 	/* error occurs */
 	return rd;
+}
+
+int w_readline_buffer(void *buf, unsigned int count)
+{
+	WL_RETURN_VAL_IF_FAIL(count != 0, 0);
+
+	ReadlineBuf *lbuf = NULL;
+	(void) pthread_once(&pkey_once, create_pthread_key);
+
+	if ((lbuf = (ReadlineBuf *) pthread_getspecific(pkey)) == NULL) {
+		/* the first time, create Pthread-Specific Data */
+		lbuf = readline_buf_init();
+		(void) pthread_setspecific(pkey, lbuf);
+	}
+
+	return readline_buf_copyall(lbuf, buf, count);
 }

@@ -12,10 +12,10 @@ SOURCE=$(SOURCE_DIR)/whashtable.c $(SOURCE_DIR)/wlist.c \
 all:hashtable readline
 
 
-hashtable:hashtable.c
+hashtable:hashtable.c $(SOURCE)
 	$(CC) $(CFLAGS) hashtable.c $(SOURCE) -o hashtable
 
-readline:readline.c
+readline:readline.c $(SOURCE)
 	$(CC) $(CFLAGS) readline.c $(SOURCE) -o readline
 
 clean:

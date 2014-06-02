@@ -44,14 +44,6 @@ int w_is_fd_fifo(int fd);
 
 
 /*
- * @description: check if fd is ok to read (won't cause SIGPIPE) or not
- *
- * @return: return 1 if ok, otherwise 0
- */
-int w_is_fd_ok_to_read(int fd);
-
-
-/*
  * @description: read a line from file
  *				this function will cache data
  *
@@ -62,6 +54,13 @@ int w_is_fd_ok_to_read(int fd);
  * @return: the size read
  */
 int w_readline(int fd, void *buf, unsigned int count);
+
+/*
+ * @description: this function copys count bytes of data in readline buffer into buf
+ * 
+ * @return: the size of data that copied
+ */
+int w_readline_buffer(void *buf, unsigned int count);
 
 
 #endif
