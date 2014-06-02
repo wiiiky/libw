@@ -204,7 +204,7 @@ static pthread_key_t pkey;
 static pthread_once_t pkey_once = PTHREAD_ONCE_INIT;
 
 /* destroy the Thread-Specific Data */
-static void pthread_data_destroy(void *ptr)
+static void destroy_pthread_data(void *ptr)
 {
 	ReadlineBuf *buf = (ReadlineBuf *) ptr;
 	readline_buf_free(buf);
@@ -212,13 +212,11 @@ static void pthread_data_destroy(void *ptr)
 
 static void create_pthread_key(void)
 {
-	(void) pthread_key_create(&pkey, pthread_data_destroy);
+	(void) pthread_key_create(&pkey, destroy_pthread_data);
 }
 
-int w_readline(int fd, void *buf, unsigned int count)
+static ReadlineBuf *get_pthread_data(void)
 {
-	WL_RETURN_VAL_IF_FAIL(count != 0, 0);
-
 	ReadlineBuf *lbuf = NULL;
 	(void) pthread_once(&pkey_once, create_pthread_key);
 
@@ -227,6 +225,15 @@ int w_readline(int fd, void *buf, unsigned int count)
 		lbuf = readline_buf_init();
 		(void) pthread_setspecific(pkey, lbuf);
 	}
+	return lbuf;
+}
+
+int w_readline(int fd, void *buf, unsigned int count)
+{
+	WL_RETURN_VAL_IF_FAIL(count != 0, 0);
+
+	ReadlineBuf *lbuf = get_pthread_data();
+
 	int rd;
 	if ((rd = readline_buf_copyline(lbuf, buf, count)) > 0) {
 		return rd;
@@ -255,14 +262,7 @@ int w_readline_buffer(void *buf, unsigned int count)
 {
 	WL_RETURN_VAL_IF_FAIL(count != 0, 0);
 
-	ReadlineBuf *lbuf = NULL;
-	(void) pthread_once(&pkey_once, create_pthread_key);
-
-	if ((lbuf = (ReadlineBuf *) pthread_getspecific(pkey)) == NULL) {
-		/* the first time, create Pthread-Specific Data */
-		lbuf = readline_buf_init();
-		(void) pthread_setspecific(pkey, lbuf);
-	}
+	ReadlineBuf *lbuf = get_pthread_data();
 
 	return readline_buf_copyall(lbuf, buf, count);
 }

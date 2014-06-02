@@ -1,3 +1,7 @@
+2014-06-02 15:54 Wiky L <wiiiky@yeah.net>
+
+	* w_readline: read a line from file descriptor
+
 2014-05-30 23:27 Wiky L <wiiiky@yeah.net>
 
 	* WHashTable: hash table
