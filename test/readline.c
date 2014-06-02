@@ -16,5 +16,13 @@ int main(int argc, char *argv[])
 		printf("%s", buf);
 		/*printf("!\n"); */
 	}
+
+	printf("----------------------------------------\n");
+	if(w_is_fd_socket(fd)){
+		printf("socket!\n");
+	}else{
+		printf("file!\n");
+	}
+
 	return 0;
 }

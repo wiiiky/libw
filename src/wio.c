@@ -24,6 +24,8 @@
 #include <errno.h>
 #include <pthread.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int w_read(int fd, void *buf, unsigned int count)
 {
@@ -49,6 +51,35 @@ int w_write(int fd, void *buf, unsigned int count)
 	return ret;
 }
 
+static int w_is_fd_type_internal(int fd, int mode)
+{
+	struct stat statbuf;
+	int ret = fstat(fd, &statbuf);
+	if (WL_UNLIKELY(ret != 0)) {
+		return 0;
+	}
+	if (((statbuf.st_mode & S_IFMT) == (mode_t) mode)) {
+		return 1;
+	}
+	return 0;
+}
+
+int w_is_fd_socket(int fd)
+{
+	return w_is_fd_type_internal(fd, S_IFSOCK);
+}
+
+int w_is_fd_fifo(int fd)
+{
+	return w_is_fd_type_internal(fd, S_IFIFO);
+}
+
+int w_is_fd_ok_to_read(int fd)
+{
+	/* TODO */
+	return 1;
+}
+
 /************************readline***********************************/
 typedef struct {
 	unsigned int size;			/* total size */
@@ -58,6 +89,9 @@ typedef struct {
 
 #define DEFAULT_BUFSIZE (LARGE_BUF)
 
+/*
+ * initialize the buffer
+ */
 ReadlineBuf *readline_buf_init()
 {
 	ReadlineBuf *buf = w_malloc(sizeof(ReadlineBuf));
@@ -68,7 +102,10 @@ ReadlineBuf *readline_buf_init()
 	return buf;
 }
 
-void readline_buf_free(ReadlineBuf * buf)
+/*
+ * free the buffer
+ */
+static void readline_buf_free(ReadlineBuf * buf)
 {
 	if (buf == NULL) {
 		return;
@@ -80,7 +117,7 @@ void readline_buf_free(ReadlineBuf * buf)
 /*
  * move buf forward size bytes
  */
-void readline_buf_forward(ReadlineBuf * buf, int size)
+static void readline_buf_forward(ReadlineBuf * buf, int size)
 {
 	if (size <= 0) {
 		return;
@@ -94,17 +131,19 @@ void readline_buf_forward(ReadlineBuf * buf, int size)
 	for (i = size, j = 0; i < buf->len; i++, j++) {
 		buf->buf[j] = buf->buf[i];
 	}
-	buf->buf[buf->len] = '\0';
 	buf->len = buf->len - size;
 }
 
-void readline_buf_enlarge(ReadlineBuf * buf)
+/*
+ * enlarge buffer
+ */
+static void readline_buf_enlarge(ReadlineBuf * buf)
 {
 	buf->size = buf->size << 1;	/* double */
 	buf->buf = w_realloc(buf->buf, buf->size);
 }
 
-void readline_buf_make_space(ReadlineBuf * lbuf)
+static void readline_buf_make_space(ReadlineBuf * lbuf)
 {
 	if (lbuf->len >= lbuf->size - 1) {
 		readline_buf_enlarge(lbuf);
@@ -112,12 +151,23 @@ void readline_buf_make_space(ReadlineBuf * lbuf)
 }
 
 
-void readline_buf_copydata(ReadlineBuf * lbuf, void *buf,
-						   unsigned int count)
+static void readline_buf_copydata(ReadlineBuf * lbuf, void *buf,
+								  unsigned int count)
 {
 	strncpy(buf, lbuf->buf, count);
 	((char *) buf)[count] = '\0';
 	readline_buf_forward(lbuf, count);
+}
+
+static char *readline_buf_findline(ReadlineBuf * lbuf)
+{
+	int i;
+	for (i = 0; i < lbuf->len; i++) {
+		if (lbuf->buf[i] == '\n') {
+			return lbuf->buf + i;
+		}
+	}
+	return NULL;
 }
 
 /*
@@ -125,10 +175,10 @@ void readline_buf_copydata(ReadlineBuf * lbuf, void *buf,
  * return copied size if success,
  * return 0 if fail
  */
-int readline_buf_copyline(ReadlineBuf * lbuf, void *buf,
-						  unsigned int count)
+static int readline_buf_copyline(ReadlineBuf * lbuf, void *buf,
+								 unsigned int count)
 {
-	char *line = strchr(lbuf->buf, '\n');
+	char *line = readline_buf_findline(lbuf);
 	if (line == NULL) {
 		return 0;
 	}
@@ -138,12 +188,20 @@ int readline_buf_copyline(ReadlineBuf * lbuf, void *buf,
 	return move;
 }
 
+static unsigned int readline_buf_copyall(ReadlineBuf * lbuf, void *buf,
+										 unsigned int count)
+{
+	unsigned int move = lbuf->len < count ? lbuf->len : count - 1;
+	readline_buf_copydata(lbuf, buf, move);
+	return move;
+}
+
 
 /* Thread-Specific Data */
 static pthread_key_t pkey;
 static pthread_once_t pkey_once = PTHREAD_ONCE_INIT;
 
-/* 销毁线程专有数据 */
+/* destroy the Thread-Specific Data */
 static void pthread_data_destroy(void *ptr)
 {
 	ReadlineBuf *buf = (ReadlineBuf *) ptr;
@@ -155,7 +213,6 @@ static void create_pthread_key(void)
 	(void) pthread_key_create(&pkey, pthread_data_destroy);
 }
 
-
 int w_readline(int fd, void *buf, unsigned int count)
 {
 	WL_RETURN_VAL_IF_FAIL(count != 0, 0);
@@ -164,7 +221,7 @@ int w_readline(int fd, void *buf, unsigned int count)
 	(void) pthread_once(&pkey_once, create_pthread_key);
 
 	if ((lbuf = (ReadlineBuf *) pthread_getspecific(pkey)) == NULL) {
-		/* the first time */
+		/* the first time, create Pthread-Specific Data */
 		lbuf = readline_buf_init();
 		(void) pthread_setspecific(pkey, lbuf);
 	}
@@ -173,23 +230,32 @@ int w_readline(int fd, void *buf, unsigned int count)
 		return rd;
 	}
 
+	if (!w_is_fd_ok_to_read(fd)) {
+		/* 
+		 * have to check if fd is still open to read here.
+		 * if fd is already closed, but we call read on fd.
+		 * Will cause SIGPIPE, which interrupts program by default.
+		 * 
+		 * if fd is already closed, just return buffer.
+		 */
+		return readline_buf_copyall(lbuf, buf, count);
+	}
+
 	readline_buf_make_space(lbuf);
 	rd = 0;
 	while ((rd =
 			w_read(fd, lbuf->buf + lbuf->len,
 				   lbuf->size - lbuf->len)) > 0) {
 		if (rd == 0) {
-			/* EOF */
-			unsigned int move = lbuf->len < count ? lbuf->len : count - 1;
-			readline_buf_copydata(lbuf, buf, move);
-			return move;
+			/* EOF, return all buffer */
+			return readline_buf_copyall(lbuf, buf, count);
 		}
 		lbuf->len += rd;
-		lbuf->buf[lbuf->len] = '\0';
 		if ((rd = readline_buf_copyline(lbuf, buf, count)) > 0) {
 			return rd;
 		}
 		readline_buf_make_space(lbuf);
 	}
+	/* error occurs */
 	return rd;
 }

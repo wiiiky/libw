@@ -28,6 +28,28 @@ int w_read(int fd, void *buf, unsigned int count);
  */
 int w_write(int fd, void *buf, unsigned int count);
 
+/*
+ * @description: check if fd is a socket or not
+ * 
+ * @return: if fd is socket, return 1. Otherwise 0.
+ */
+int w_is_fd_socket(int fd);
+
+/*
+ * @description: check if fd is a FIFO descriptor or not
+ * 
+ * @return: if fd is FIFO, return 1. Otherwise 0;
+ */
+int w_is_fd_fifo(int fd);
+
+
+/*
+ * @description: check if fd is ok to read (won't cause SIGPIPE) or not
+ *
+ * @return: return 1 if ok, otherwise 0
+ */
+int w_is_fd_ok_to_read(int fd);
+
 
 /*
  * @description: read a line from file
