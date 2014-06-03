@@ -24,23 +24,23 @@
 
 void wlog(WLogType type, const char *format, ...)
 {
-	WL_RETURN_IF_FAIL(format != NULL);
+    WL_RETURN_IF_FAIL(format != NULL);
 
-	va_list args;
-	va_start(args, format);
+    va_list args;
+    va_start(args, format);
 
-	switch (type) {
-	case WLOG_VERBOSE:
-		break;
-	case WLOG_DEBUG:
-		fprintf(stderr, "Debug(%s:%d): ", __FILE__, __LINE__);
-		break;
-	case WLOG_ERROR:
-		fprintf(stderr, "\033[01;31mError(%s:%d)\033[0m: ",
-				__FILE__, __LINE__);
-		break;
-	default:
-		break;
-	}
-	vfprintf(stderr, format, args);
+    switch (type) {
+    case WLOG_VERBOSE:
+        break;
+    case WLOG_DEBUG:
+        fprintf(stderr, "Debug(%s:%d): ", __FILE__, __LINE__);
+        break;
+    case WLOG_ERROR:
+        fprintf(stderr, "\033[01;31mError(%s:%d)\033[0m: ",
+                __FILE__, __LINE__);
+        break;
+    default:
+        break;
+    }
+    vfprintf(stderr, format, args);
 }

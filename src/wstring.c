@@ -24,31 +24,31 @@
 
 char *w_strdup(const char *str)
 {
-	WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
-	return strdup(str);
+    WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
+    return strdup(str);
 }
 
 char *w_strndup(const char *str, int n)
 {
-	WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
-	if (n < 0) {
-		return strdup(str);
-	}
-	return strndup(str, n);
+    WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
+    if (n < 0) {
+        return strdup(str);
+    }
+    return strndup(str, n);
 }
 
 char *w_strdup_printf(const char *format, ...)
 {
-	WL_RETURN_VAL_IF_FAIL(format != NULL, NULL);
+    WL_RETURN_VAL_IF_FAIL(format != NULL, NULL);
 
-	va_list vl;
-	char buf[LARGE_BUF];
+    va_list vl;
+    char buf[LARGE_BUF];
 
-	va_start(vl, format);
+    va_start(vl, format);
 
-	vsnprintf(buf, LARGE_BUF, format, vl);
+    vsnprintf(buf, LARGE_BUF, format, vl);
 
-	va_end(vl);
+    va_end(vl);
 
-	return w_strdup(buf);
+    return w_strdup(buf);
 }

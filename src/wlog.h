@@ -24,9 +24,9 @@
  */
 
 typedef enum {
-	WLOG_VERBOSE,
-	WLOG_DEBUG,
-	WLOG_ERROR,
+    WLOG_VERBOSE,
+    WLOG_DEBUG,
+    WLOG_ERROR,
 } WLogType;
 
 /*

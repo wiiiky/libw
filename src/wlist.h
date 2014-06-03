@@ -24,9 +24,9 @@
 typedef struct _WList WList;
 
 struct _WList {
-	WList *prev;
-	WList *next;
-	void *data;
+    WList *prev;
+    WList *next;
+    void *data;
 };
 
 /*

@@ -24,9 +24,35 @@
 int w_read(int fd, void *buf, unsigned int count);
 
 /*
+ * @description: read count bytes from given file descriptor,
+ *              unless EOF or error occurs.
+ * 
+ * @param fd: file descriptor
+ * @param buf: buffer
+ * @param count: the byte size of buffer
+ * 
+ *              Notice that buf will always be null-terminated,
+ *                      which means that only count-1 bytes will be read at max.
+ *                      the given count must be larger than 0.
+ *                      If count equals 1, just set buf[0]='\0' and return, no data will be read. 
+ */
+int w_readn(int fd, char *buf, unsigned int count);
+
+/*
  * wraper of write() 
  */
 int w_write(int fd, void *buf, unsigned int count);
+
+/*
+ * @description: write count bytes to given file descriptor,
+ *              unless error occurs.
+ * 
+ * @param fd: file descriptor
+ * @param buf: buffer
+ * @param count: the byte to write
+ * 
+ */
+int w_writen(int fd, char *buf, unsigned int count);
 
 /*
  * @description: check if fd is a socket or not

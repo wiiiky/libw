@@ -57,10 +57,10 @@ typedef int (*WNodeFunc) (void *key, void *value, void *user_data);
  * create a new WHastTable
  */
 WHashTable *w_hash_table_new(unsigned short i,
-							 WHashFunc hash_func,
-							 WEqualFunc equal_func,
-							 WKeyDestroyFunc key_func,
-							 WValueDestroyFunc value_func);
+                             WHashFunc hash_func,
+                             WEqualFunc equal_func,
+                             WKeyDestroyFunc key_func,
+                             WValueDestroyFunc value_func);
 
 /*
  * @description: Insert a new key:value into hash table
