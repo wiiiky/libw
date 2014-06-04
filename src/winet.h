@@ -15,14 +15,37 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
+#ifndef __WL_WINET_H__
+#define __WL_WINET_H__
 
-#ifndef __WL_LIBWL_H__
-#define __WL_LIBWL_H__
+#include <sys/types.h>
+#include <sys/socket.h>
 
-#include "wstring.h"
-#include "wlist.h"
-#include "wio.h"
-#include "winet.h"
-#include "wlog.h"
+/*
+ * network-related functions
+ */
+
+/*
+ * wrapper of socket()
+ */
+int w_socket(int domain, int type, int protocol);
+
+/*
+ * wrapper of bind()
+ */
+int w_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+
+
+/*
+ * @description: bind a local port to given socket descriptor
+ * 
+ * @param sockfd: socket descriptor
+ * @param doamin: AF_INET or AF_INET6
+ * @param port: the port
+ * 
+ * @return: 0 on success, -1 on error.
+ */
+int w_bind_local(int sockfd, int domain, unsigned short port);
+
 
 #endif

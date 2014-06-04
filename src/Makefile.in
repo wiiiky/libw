@@ -123,7 +123,8 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
 	"$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libwl_la_DEPENDENCIES =
-am_libwl_la_OBJECTS = wlist.lo wlog.lo wstring.lo whashtable.lo wio.lo
+am_libwl_la_OBJECTS = wlist.lo wlog.lo wstring.lo whashtable.lo wio.lo \
+	winet.lo
 libwl_la_OBJECTS = $(am_libwl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -324,7 +325,8 @@ libwl_la_SOURCES = \
 	wlog.c \
 	wstring.c \
 	whashtable.c \
-	wio.c
+	wio.c \
+	winet.c
 
 libwl_la_LDFLAGS = 
 libwl_la_LIBADD = 
@@ -335,7 +337,8 @@ include_HEADERS = \
 	wlog.h \
 	wstring.h \
 	whashtable.h \
-	wio.h
+	wio.h \
+	winet.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libwl-0.1.pc
@@ -424,6 +427,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/whashtable.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wlist.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wlog.Plo@am__quote@

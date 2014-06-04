@@ -34,6 +34,7 @@ int w_read(int fd, void *buf, unsigned int count)
     errno = 0;
     ret = read(fd, buf, count);
     if (ret < 0 && (errno == EINTR || errno == EAGAIN)) {
+        /* interrupted system call or try again */
         goto AGAIN;
     }
     return ret;
@@ -67,6 +68,7 @@ int w_write(int fd, void *buf, unsigned int count)
     errno = 0;
     ret = write(fd, buf, count);
     if (ret < 0 && (errno == EINTR || errno == EAGAIN)) {
+        /* interrupted system call or try again */
         goto AGAIN;
     }
     return ret;
