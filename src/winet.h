@@ -47,5 +47,18 @@ int w_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
  */
 int w_bind_local(int sockfd, int domain, unsigned short port);
 
+/*
+ * @description: assign the network interface IPv4 or IPv6 address
+ * 
+ * @param addr: the pointer to the address structure
+ * @param addrlen: the length in bytes of the address structure
+ * @param iface: the interface name
+ * @param domain: only AF_INET and AF_INET6 are valid;
+ * 
+ * @return: 0 on success, -1 on error
+ */
+int get_iface_ip(struct sockaddr *addr, socklen_t addrlen, char *iface,
+                 int domain);
+
 
 #endif

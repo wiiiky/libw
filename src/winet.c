@@ -17,6 +17,10 @@
  */
 #include "winet.h"
 #include <netinet/in.h>
+#include <ifaddrs.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
 
 int w_socket(int domain, int type, int protocol)
@@ -68,4 +72,37 @@ int w_bind_local(int sockfd, int domain, unsigned short port)
         return w_bind_local6(sockfd, port);
     }
     return -1;
+}
+
+int get_iface_ip(struct sockaddr *addr, socklen_t addrlen, char *iface,
+                 int domain)
+{
+    if (addr == NULL || iface == NULL
+        || (domain != AF_INET && domain != AF_INET6)) {
+        return -1;
+    }
+
+    struct ifaddrs *ifap = NULL;
+    int ret = -1;
+
+    if (getifaddrs(&ifap)) {
+        return ret;
+    }
+
+    struct ifaddrs *ifptr = ifap;
+    while (ifptr) {
+        if (strcmp(iface, ifptr->ifa_name) == 0 &&
+            ifptr->ifa_addr != NULL &&
+            ifptr->ifa_addr->sa_family == domain) {
+            addr->sa_family = domain;
+            memcpy(addr, ifptr->ifa_addr, addrlen);
+            ret = 0;
+            break;
+        }
+        ifptr = ifptr->ifa_next;
+    }
+
+    freeifaddrs(ifap);
+
+    return ret;
 }
