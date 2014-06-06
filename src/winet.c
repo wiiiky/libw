@@ -74,11 +74,12 @@ int w_bind_local(int sockfd, int domain, unsigned short port)
     return -1;
 }
 
-int get_iface_ip(struct sockaddr *addr, socklen_t addrlen, char *iface,
-                 int domain)
+int w_getifaddr(struct sockaddr *addr, socklen_t addrlen, char *iface,
+                int domain)
 {
     if (addr == NULL || iface == NULL
         || (domain != AF_INET && domain != AF_INET6)) {
+        /* check add and iface not null and domain is AF_INET or AF_INET6 */
         return -1;
     }
 
@@ -94,6 +95,7 @@ int get_iface_ip(struct sockaddr *addr, socklen_t addrlen, char *iface,
         if (strcmp(iface, ifptr->ifa_name) == 0 &&
             ifptr->ifa_addr != NULL &&
             ifptr->ifa_addr->sa_family == domain) {
+            /* return the first interface address that matches */
             addr->sa_family = domain;
             memcpy(addr, ifptr->ifa_addr, addrlen);
             ret = 0;

@@ -57,8 +57,8 @@ int w_bind_local(int sockfd, int domain, unsigned short port);
  * 
  * @return: 0 on success, -1 on error
  */
-int get_iface_ip(struct sockaddr *addr, socklen_t addrlen, char *iface,
-                 int domain);
+int w_getifaddr(struct sockaddr *addr, socklen_t addrlen, char *iface,
+                int domain);
 
 
 #endif
