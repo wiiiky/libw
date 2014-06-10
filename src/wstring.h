@@ -57,5 +57,15 @@ char *w_strndup(const char *str, int n);
 char *w_strdup_printf(const char *format, ...);
 
 
+/*
+ * @description: compare two strings, handles NULL,
+ *              compares two NULL pointers returns 0,
+ *              sorts NULL pointer before non-NULL string.
+ * 
+ * @param s1: a C string or NULL
+ * @param s2: another C string or NULL
+ * @return: a signed integer that represents s1-s2
+ */
+int w_strcmp0(const char *s1, const char *s2);
 
 #endif

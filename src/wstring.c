@@ -52,3 +52,15 @@ char *w_strdup_printf(const char *format, ...)
 
     return w_strdup(buf);
 }
+
+int w_strcmp0(const char *s1, const char *s2)
+{
+    if (s1 == NULL && s2 == NULL) {
+        return 0;
+    } else if (s1 == NULL) {
+        return -1;
+    } else if (s2 == NULL) {
+        return 1;
+    }
+    return strcmp(s1, s2);
+}
