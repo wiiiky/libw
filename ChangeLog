@@ -1,3 +1,8 @@
+2014-06-12	16:59 Wiky L <wiiiky@yeah.net>
+
+	* WList: sort WList
+	* WHashTable: max size not lager than prime_mod
+
 2014-06-02 15:54 Wiky L <wiiiky@yeah.net>
 
 	* w_readline: read a line from file descriptor

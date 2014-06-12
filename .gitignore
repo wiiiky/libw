@@ -2,4 +2,6 @@ Debug/
 
 *~
 
-usr
+usr/
+
+autom4te.cache/
