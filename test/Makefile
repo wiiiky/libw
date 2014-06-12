@@ -25,4 +25,5 @@ list:list.c $(SOURCE)
 	$(CC) $(CFLAGS) list.c $(SOURCE) -o list
 
 clean:
-	rm hashtable readline readn list
+	indent -kr -ts4 -nut *.c
+	rm hashtable readline readn list *~

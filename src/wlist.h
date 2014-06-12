@@ -152,6 +152,34 @@ WList *w_list_sort_bubble(WList * list, WCompareFunc func);
 
 
 /*
+ * @description: sort a list using insertion sort
+ * 
+ * @param list: the list to sort
+ * @param func: the function to compare two elements.
+ * 
+ * @return: the new head of list;
+ */
+WList *w_list_sort_insertion(WList * list, WCompareFunc func);
+
+/*
+ * use insertion sort by default
+ */
+#define w_list_sort(list,func)  w_list_sort_insertion (list,func)
+
+/*
+ * @description: insert data into list, and use given compare function to 
+ *              determine position.
+ *
+ * @param list: the list
+ * @param data: the data to insert
+ * @param func: the compare function
+ * 
+ * @return: the new head of list
+ */
+WList *w_list_insert_sorted(WList * list, void *data, WCompareFunc func);
+
+
+/*
  * @description: find the element in the given list that contains data.
  * 
  * @return: the element or NULL if fail.

@@ -201,6 +201,66 @@ WList *w_list_sort_bubble(WList * list, WCompareFunc func)
     return new;
 }
 
+/*
+ * insert an element into the list and
+ * use given compare function to determine its position
+ */
+static WList *w_list_insert_element_sorted(WList * list, WList * ele,
+                                           WCompareFunc func)
+{
+    ele->next = NULL;
+    ele->prev = NULL;
+    if (list == NULL) {
+        list = ele;
+    } else if (func(w_list_data(ele), w_list_data(list)) < 0) {
+        /* insert element into the first position */
+        ele->next = list;
+        list->prev = ele;
+        list = ele;
+    } else {
+        WList *nptr = w_list_next(list);
+        while (nptr) {
+            if (func(w_list_data(ele), w_list_data(nptr)) < 0) {
+                WList *prev = w_list_prev(nptr);
+                ele->next = nptr;
+                nptr->prev = ele;
+                ele->prev = prev;
+                prev->next = ele;
+                break;
+            }
+            if (w_list_next(nptr)) {
+                nptr = w_list_next(nptr);
+            } else {
+                /* append to last */
+                nptr->next = ele;
+                ele->prev = nptr;
+                break;
+            }
+        }
+    }
+    return list;
+}
+
+WList *w_list_sort_insertion(WList * list, WCompareFunc func)
+{
+    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+
+    WList *new = NULL;
+    WList *ptr = list;
+    while (ptr) {
+        WList *ele = ptr;
+        ptr = w_list_next(ptr);
+        new = w_list_insert_element_sorted(new, ele, func);
+    }
+    return new;
+}
+
+WList *w_list_insert_sorted(WList * list, void *data, WCompareFunc func)
+{
+    WList *ele = w_list_alloc(data);
+    return w_list_insert_element_sorted(list, ele, func);
+}
+
 WList *w_list_find(WList * list, void *data)
 {
     WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
