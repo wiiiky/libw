@@ -107,7 +107,7 @@ static const uint32_t prime_mod[] = {
 };
 
 /*
- * 2^5 buckets by default
+ * 31 buckets by default
  */
 #define W_HASH_TABLE_DEFAULT_INDEX  (5)
 
@@ -121,13 +121,15 @@ WHashTable *w_hash_table_new(unsigned short i,
     /* I found that malloc(sizeof(char*)*(1<<31)) will fail in my system
        but malloc(sizeof(char*)*(1<<30)) not */
     if (i >= 31) {
+        index = 31;
+    } else if (i < 0) {
         index = W_HASH_TABLE_DEFAULT_INDEX;
     } else {
         index = i;
     }
 
     WHashTable *h = (WHashTable *) malloc(sizeof(WHashTable));
-    h->size = 1 << index;
+    h->size = prime_mod[index];
     h->mod = prime_mod[index];
     h->buckets = (WList **) calloc(sizeof(WList *), h->size);   /* init to NULL */
     h->keys = NULL;
