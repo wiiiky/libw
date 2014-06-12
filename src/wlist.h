@@ -62,6 +62,8 @@ WList *w_list_last(WList * list);
 #define w_list_next(list)   ((list)->next)
 #define w_list_prev(list)   ((list)->prev)
 
+#define w_list_data(list)   ((list)->data)
+
 /*
  * @description: append a new element with data to the end of the list.
  * 
@@ -136,6 +138,17 @@ typedef int (*WCompareFunc) (const void *a, const void *b);
  * @return: NULL if not found
  */
 WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b);
+
+/*
+ * @description: sort a list using bubble sort.
+ *               return the new head of list
+ * 
+ * @param list: the list to sort
+ * @param func: the function to compare two elements.
+ * 
+ * @return: the new head of list
+ */
+WList *w_list_sort_bubble(WList * list, WCompareFunc func);
 
 
 /*

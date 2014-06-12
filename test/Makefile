@@ -9,7 +9,7 @@ SOURCE_DIR=../src
 SOURCE=$(SOURCE_DIR)/whashtable.c $(SOURCE_DIR)/wlist.c \
 	   $(SOURCE_DIR)/wstring.c $(SOURCE_DIR)/wio.c
 
-all:hashtable readline readn
+all:hashtable readline readn list
 
 
 hashtable:hashtable.c $(SOURCE)
@@ -21,5 +21,8 @@ readline:readline.c $(SOURCE)
 readn:readn.c $(SOURCE)
 	$(CC) $(CFLAGS) readn.c $(SOURCE) -o readn
 
+list:list.c $(SOURCE)
+	$(CC) $(CFLAGS) list.c $(SOURCE) -o list
+
 clean:
-	rm hashtable readline readn
+	rm hashtable readline readn list
