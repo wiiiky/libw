@@ -300,6 +300,25 @@ WList *w_list_remove_full(WList * list, void *data, WListDestroy destroy)
     return w_list_remove_internal(list, data, destroy);
 }
 
+WList *w_list_reverse(WList * list)
+{
+    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+
+    WList *new = NULL;
+    while (list) {
+        WList *t = w_list_next(list);
+        list->next = w_list_prev(list);
+        list->prev = t;
+        if (t) {
+            list = t;
+        } else {
+            return list;
+        }
+    }
+    /* never come here */
+    return NULL;
+}
+
 WList *w_list_alloc(void *data)
 {
     WList *list = (WList *) malloc(sizeof(WList));

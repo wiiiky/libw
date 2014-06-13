@@ -202,5 +202,14 @@ WList *w_list_remove(WList * list, void *data);
  */
 WList *w_list_remove_full(WList * list, void *data, WListDestroy destroy);
 
+/*
+ * @description: reverse a list
+ * 
+ * @param list: the list to reserse
+ *
+ * @return: the new head of list
+ */
+WList *w_list_reverse(WList * list);
+
 
 #endif

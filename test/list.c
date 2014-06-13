@@ -76,6 +76,14 @@ int main(int argc, char *argv[])
         printf("%d\n", (int) (long) w_list_data(ptr));
         ptr = w_list_next(ptr);
     }
+    list = w_list_reverse(list);
+
+    printf("==============reversed==================\n");
+    ptr = list;
+    while (ptr) {
+        printf("%d\n", (int) (long) w_list_data(ptr));
+        ptr = w_list_next(ptr);
+    }
     w_list_free(list);
     return 0;
 }
