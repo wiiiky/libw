@@ -304,7 +304,6 @@ WList *w_list_reverse(WList * list)
 {
     WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
-    WList *new = NULL;
     while (list) {
         WList *t = w_list_next(list);
         list->next = w_list_prev(list);

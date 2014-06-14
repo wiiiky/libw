@@ -24,7 +24,7 @@
  */
 
 
-typedef int (*WSortCompare) (void *data, int i, void *b);
+typedef int (*WSortCompare) (void *data, int i, void *key);
 typedef void (*WSortAssign) (void *data, int i, int j);
 typedef void (*WSortSave) (void *data, int i, void *key);
 typedef void (WSortRestore) (void *data, int i, void *key);

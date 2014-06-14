@@ -22,7 +22,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-void wlog(WLogType type, const char *format, ...)
+void wlog(WLogType type, const char *file, int line, const char *format,
+          ...)
 {
     WL_RETURN_IF_FAIL(format != NULL);
 
@@ -33,11 +34,10 @@ void wlog(WLogType type, const char *format, ...)
     case WLOG_VERBOSE:
         break;
     case WLOG_DEBUG:
-        fprintf(stderr, "Debug(%s:%d): ", __FILE__, __LINE__);
+        fprintf(stderr, "\033[01;33mDebug(%s:%d)\033[0m: ", file, line);
         break;
     case WLOG_ERROR:
-        fprintf(stderr, "\033[01;31mError(%s:%d)\033[0m: ",
-                __FILE__, __LINE__);
+        fprintf(stderr, "\033[01;31mError(%s:%d)\033[0m: ", file, line);
         break;
     default:
         break;
