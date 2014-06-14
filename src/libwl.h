@@ -24,5 +24,7 @@
 #include "wio.h"
 #include "winet.h"
 #include "wlog.h"
+#include "wsort.h"
+#include "whashtable.h"
 
 #endif
