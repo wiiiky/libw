@@ -124,7 +124,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libwl_la_DEPENDENCIES =
 am_libwl_la_OBJECTS = wlist.lo wlog.lo wstring.lo whashtable.lo wio.lo \
-	winet.lo wsort.lo wqueue.lo
+	winet.lo wsort.lo wasyncqueue.lo wqueue.lo
 libwl_la_OBJECTS = $(am_libwl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -328,6 +328,7 @@ libwl_la_SOURCES = \
 	wio.c \
 	winet.c \
 	wsort.c \
+	wasyncqueue.c \
 	wqueue.c
 
 libwl_la_LDFLAGS = 
@@ -342,6 +343,7 @@ include_HEADERS = \
 	wio.h \
 	winet.h \
 	wsort.h \
+	wasyncqueue.h \
 	wqueue.h
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -430,6 +432,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wasyncqueue.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/whashtable.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wio.Plo@am__quote@

@@ -27,5 +27,6 @@
 #include "wsort.h"
 #include "whashtable.h"
 #include "wqueue.h"
+#include "wasyncqueue.h"
 
 #endif

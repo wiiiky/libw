@@ -22,6 +22,7 @@ libwl_la_SOURCES = \
 	wio.c \
 	winet.c \
 	wsort.c \
+	wasyncqueue.c \
 	wqueue.c
 
 libwl_la_LDFLAGS = 
@@ -40,6 +41,7 @@ include_HEADERS = \
 	wio.h \
 	winet.h \
 	wsort.h \
+	wasyncqueue.h \
 	wqueue.h
 
 pkgconfigdir = $(libdir)/pkgconfig

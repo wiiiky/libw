@@ -30,7 +30,7 @@ struct _WList {
 };
 
 /*
- * @description: create a new element with data
+ * @description: creates a new element with data
  * 
  * @param data: the data for the new element
  * 
@@ -38,8 +38,24 @@ struct _WList {
  */
 WList *w_list_alloc(void *data);
 
+
 /*
- * @description: create a new list without any element.
+ * @description: frees the memory of list element
+ */
+void w_list_free1(WList * list);
+
+
+
+/*
+ * @description: the type of function passed to w_list_free_full
+ * 
+ * @param data: the data of element
+ */
+typedef void (*WListDestroy) (void *data);
+void w_list_free1_full(WList * list, WListDestroy destroy);
+
+/*
+ * @description: creates a new list without any element.
  * 
  * @return: NULL.
  */
@@ -47,7 +63,7 @@ WList *w_list_new();
 
 
 /*
- * @description: get the first/last element of list
+ * @description: gets the first/last element of list
  * 
  * @param list: not NULL
  */
@@ -65,7 +81,7 @@ WList *w_list_last(WList * list);
 #define w_list_data(list)   ((list)->data)
 
 /*
- * @description: append a new element with data to the end of the list.
+ * @description: appends a new element with data to the end of the list.
  * 
  * @param list: a pointer to a WList.
  * @param data: the data for the new element.
@@ -75,7 +91,7 @@ WList *w_list_last(WList * list);
 WList *w_list_append(WList * list, void *data);
 
 /*
- * @description: insert a new element with data to the list 
+ * @description: inserts a new element with data to the list 
  *				at the given position.
  * 
  * @param list: a pointer to a WList.
@@ -96,7 +112,7 @@ WList *w_list_insert(WList * list, void *data, int position);
  */
 typedef void (*WForeachFunc) (void *data, void *user_data);
 /*
- * @description: call a function for each element in the list
+ * @description: calls function func for each element in the list
  * 
  * @param list: the list
  * @param func: the function to call for each element's data
@@ -105,18 +121,12 @@ typedef void (*WForeachFunc) (void *data, void *user_data);
 void w_list_foreach(WList * list, WForeachFunc func, void *user_data);
 
 /*
- * @description: free a list
+ * @description: frees a list
  */
 void w_list_free(WList * list);
 
 /*
- * @description: the type of function passed to w_list_free_full
- * 
- * @param data: the data of element
- */
-typedef void (*WListDestroy) (void *data);
-/*
- * @description: free a list,and call destroy on every element
+ * @description: frees a list,and call destroy on every element
  * 
  * @param list: the list
  * @param destroy: the destroy function
@@ -133,14 +143,14 @@ void w_list_free_full(WList * list, WListDestroy destroy);
  */
 typedef int (*WCompareFunc) (const void *a, const void *b);
 /*
- * @description: find the element with data that equals to b
+ * @description: finds the element with data that equals to b
  * 
  * @return: NULL if not found
  */
 WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b);
 
 /*
- * @description: sort a list using bubble sort.
+ * @description: sorts a list using bubble sort.
  *               return the new head of list
  * 
  * @param list: the list to sort
@@ -152,7 +162,7 @@ WList *w_list_sort_bubble(WList * list, WCompareFunc func);
 
 
 /*
- * @description: sort a list using insertion sort
+ * @description: sorts a list using insertion sort
  * 
  * @param list: the list to sort
  * @param func: the function to compare two elements.
@@ -167,7 +177,7 @@ WList *w_list_sort_insertion(WList * list, WCompareFunc func);
 #define w_list_sort(list,func)  w_list_sort_insertion (list,func)
 
 /*
- * @description: insert data into list, and use given compare function to 
+ * @description: inserts data into list, and use given compare function to 
  *              determine position.
  *
  * @param list: the list
@@ -180,7 +190,7 @@ WList *w_list_insert_sorted(WList * list, void *data, WCompareFunc func);
 
 
 /*
- * @description: find the element in the given list that contains data.
+ * @description: finds the element in the given list that contains data.
  * 
  * @return: the element or NULL if fail.
  */
@@ -188,7 +198,7 @@ WList *w_list_find(WList * list, void *data);
 
 
 /*
- * @description: remove an element from list
+ * @description: removes an element from list
  *				 this function does not free data.
  * 
  * @param data: the data of element
@@ -198,12 +208,12 @@ WList *w_list_find(WList * list, void *data);
 WList *w_list_remove(WList * list, void *data);
 
 /*
- * remove and free data
+ * removes and frees data
  */
 WList *w_list_remove_full(WList * list, void *data, WListDestroy destroy);
 
 /*
- * @description: reverse a list
+ * @description: reverses a list
  * 
  * @param list: the list to reserse
  *

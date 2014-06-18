@@ -44,7 +44,7 @@ int w_readn(int fd, char *buf, unsigned int count);
 int w_write(int fd, void *buf, unsigned int count);
 
 /*
- * @description: write count bytes to given file descriptor,
+ * @description: writes count bytes to given file descriptor,
  *              unless error occurs.
  * 
  * @param fd: file descriptor
@@ -55,7 +55,7 @@ int w_write(int fd, void *buf, unsigned int count);
 int w_writen(int fd, char *buf, unsigned int count);
 
 /*
- * @description: check if fd is a socket or not
+ * @description: checks if fd is a socket or not
  * 
  * @return: if fd is socket, return 1. Otherwise 0.
  */
@@ -70,7 +70,7 @@ int w_is_fd_fifo(int fd);
 
 
 /*
- * @description: read a line from file
+ * @description: reads a line from file
  *				this function will cache data
  *
  * @param fd: the file descriptor

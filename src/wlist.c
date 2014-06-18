@@ -116,6 +116,9 @@ void w_list_foreach(WList * list, WForeachFunc func, void *user_data)
 
 static void w_list_free_internal(WList * list, WListDestroy destroy)
 {
+    if (list == NULL) {
+        return;
+    }
     WList *lp = w_list_next(list);
     while (list) {
         lp = w_list_next(list);
@@ -129,13 +132,11 @@ static void w_list_free_internal(WList * list, WListDestroy destroy)
 
 void w_list_free(WList * list)
 {
-    WL_RETURN_IF_FAIL(list != NULL);
     w_list_free_internal(list, NULL);
 }
 
 void w_list_free_full(WList * list, WListDestroy destroy)
 {
-    WL_RETURN_IF_FAIL(list != NULL);
     w_list_free_internal(list, destroy);
 }
 
@@ -325,4 +326,17 @@ WList *w_list_alloc(void *data)
     list->prev = list->next = NULL;
     list->data = data;
     return list;
+}
+
+void w_list_free1(WList * list)
+{
+    w_list_free1_full(list, NULL);
+}
+
+void w_list_free1_full(WList * list, WListDestroy destroy)
+{
+    if (w_list_data(list) && destroy) {
+        destroy(w_list_data(list));
+    }
+    free(list);
 }

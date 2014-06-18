@@ -18,98 +18,46 @@
 #ifndef __WL_WQUEUE_H__
 #define __WL_WQUEUE_H__
 
-/*
- * WQueue, a queue that support multi-threads.
- * 			Can be used to transfer data in threads.
- */
 
 /*
- * the structure of WQueue is private
+ * a standard queue data structure.
  */
 typedef struct _WQueue WQueue;
 
+/*
+ * Why I have to define the same destroy function in every file! FIXME
+ */
 typedef void (*WQueueDestroy) (void *data);
 
-
 /*
- * @description: create a new WQueue
- * 
- * @return: the pointer to the WQueue on success, or NULL on error
+ * @description: creates a new queue
  */
-WQueue *w_queue_new(void);
-
-WQueue *w_queue_new_full(WQueueDestroy destroy);
-
+WQueue *w_queue_new();
 
 /*
- * @description: set the destroy function for data that WQueue holds.
- *               Not need to hold the lock
- * 
- * @param destroy: the destroy function for data
+ * @description: returns the length of queue
  */
-void w_queue_set_destroy(WQueue * queue, WQueueDestroy destroy);
-
-/*
- * @description: increases the reference count of WQueue by 1, do not need to hold the lock
- */
-void w_queue_ref(WQueue * queue);
-/*
- * @description: decreases the reference count of WQueue by 1,
- *              if the count went to 0, the queue is destroyed.
- */
-void w_queue_unref(WQueue * queue);
+unsigned int w_queue_length();
 
 
 /*
- * @description: destroy the queue anyway. No matter what the count of reference
- */
-void w_queue_free(WQueue * queue);
-
-/*
- * @description: lock the WQueue, if the queue is already locked, blocked unitl lock is released
- * 
- * @return: 1 on success, 0 on error
- */
-int w_queue_lock(WQueue * queue);
-
-/*
- * @description: unlock the WQueue
- * 
- * @return: 1 on success, 0 on error
- */
-int w_queue_unlock(WQueue * queue);
-
-/*
- * @description: try to lock the WQueue, won't blocked.
- *               If WQueue is not locked, this function will lock it and return 0,
- *               otherwise return error.
- * 
- * @return: 1 on success(hold the lock of WQueue), 0 on error
- */
-int w_queue_trylock(WQueue * queue);
-
-/*
- * @description: push data into queue,
- *               the lock of queue must be hold before calling this function
- *
- * @param data: the data pushed, not NULL
- */
-void w_queue_push_unlocked(WQueue * queue, void *data);
-
-/*
- * @description: push data into queue,
- *               this function will try to hold the lock of queue, so it may blocked
- *
- * @param data: the data pushed, not NULL
+ * @description: pushes data into the queue
  */
 void w_queue_push(WQueue * queue, void *data);
 
-
-/* TODO */
-void *w_queue_pop_unlocked(WQueue * queue);
+/*
+ * @description: removes the first element and return its data
+ * 
+ * @return: data hold by first element or NULL if queue is emptry
+ */
 void *w_queue_pop(WQueue * queue);
-void *w_queue_try_pop_unlocked(WQueue * queue);
-void *w_queue_try_pop(WQueue * queue);
+
+
+/*
+ * @description: destroys queue, free memory that allocated for it
+ */
+void w_queue_free(WQueue * queue);
+void w_queue_free_full(WQueue * queue, WQueueDestroy destroy);
 
 
 #endif

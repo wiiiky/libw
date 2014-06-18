@@ -19,88 +19,72 @@
 #include "wlist.h"
 #include "m4.h"
 #include <stdlib.h>
-#include <pthread.h>
 
 struct _WQueue {
-    WList *list;                /* double-linked list */
-    pthread_mutex_t lock;       /* POSIX thread mutex */
-    unsigned int ref;           /* reference count */
-    WQueueDestroy destroy;      /* the function used to free data hold by WQueue */
+    WList *first;
+    WList *last;
+    unsigned int length;
 };
 
 
 WQueue *w_queue_new(void)
 {
-    return w_queue_new_full (NULL);
-}
-
-WQueue *w_queue_new_full(WQueueDestroy destroy)
-{
     WQueue *queue = (WQueue *) malloc(sizeof(WQueue));
-    if (queue == NULL || pthread_mutex_init(&queue->lock, NULL) != 0) {
-        /* fail to allocate the memory or initialize the lock */
-        free(queue);
-        return NULL;
-    }
-    queue->ref = 1;
-    queue->list = NULL;
-    queue->destroy = destroy;
+    queue->first = NULL;
+    queue->last = NULL;
+    queue->length = 0;
     return queue;
 }
 
-void w_queue_set_destroy(WQueue * queue, WQueueDestroy destroy)
+unsigned int w_queue_length(WQueue * queue)
 {
-    WL_RETURN_IF_FAIL(queue != NULL);
-    queue->destroy = destroy;
-}
-
-void w_queue_ref(WQueue * queue)
-{
-    WL_RETURN_IF_FAIL(queue != NULL);
-    queue->ref++;
-}
-
-void w_queue_unref(WQueue * queue)
-{
-    WL_RETURN_IF_FAIL(queue != NULL);
-    if (--queue->ref == 0) {
-        w_queue_free(queue);
-    }
-}
-
-void w_queue_free(WQueue * queue)
-{
-    WL_RETURN_IF_FAIL(queue != NULL);
-    w_list_free_full(queue->list, queue->destroy);
-    pthread_mutex_destroy(&queue->lock);
-    free(queue);
-}
-
-int w_queue_lock(WQueue * queue)
-{
-    return pthread_mutex_lock(&queue->lock) == 0;
-}
-
-int w_queue_unlock(WQueue * queue)
-{
-    return pthread_mutex_unlock(&queue->lock) == 0;
-}
-
-int w_queue_trylock(WQueue * queue)
-{
-    return pthread_mutex_trylock(&queue->lock) == 0;
-}
-
-void w_queue_push_unlocked(WQueue * queue, void *data)
-{
-    WL_RETURN_IF_FAIL(queue != NULL && data != NULL);
-    queue->list = w_list_append(queue->list, data);
+    return queue->length;
 }
 
 void w_queue_push(WQueue * queue, void *data)
 {
     WL_RETURN_IF_FAIL(queue != NULL && data != NULL);
-    w_queue_lock(queue);
-    w_queue_push_unlocked(queue, data);
-    w_queue_unlock(queue);
+    WList *ele = w_list_alloc(data);
+    if (queue->last) {
+        queue->last->next = ele;
+        ele->prev = queue->last;
+        queue->last = ele;
+    } else {
+        /* the only element */
+        queue->first = queue->last = ele;
+    }
+    queue->length++;
+}
+
+void *w_queue_pop(WQueue * queue)
+{
+    WL_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
+
+    void *data = NULL;
+    if (queue->first) {
+        WList *pop = queue->first;
+        queue->first = w_list_next(queue->first);
+        if (queue->first) {
+            queue->first->prev = NULL;
+        } else {
+            queue->last = NULL;
+        }
+        data = w_list_data(pop);
+        w_list_free1(pop);
+        queue->length--;
+    }
+    return data;
+}
+
+void w_queue_free(WQueue * queue)
+{
+    w_queue_free_full(queue, NULL);
+}
+
+void w_queue_free_full(WQueue * queue, WQueueDestroy destroy)
+{
+    WL_RETURN_IF_FAIL(queue != NULL);
+
+    w_list_free_full(queue->first, destroy);
+    free(queue);
 }

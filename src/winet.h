@@ -37,7 +37,7 @@ int w_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 
 /*
- * @description: bind a local port to given socket descriptor
+ * @description: binds a local port to given socket descriptor
  * 
  * @param sockfd: socket descriptor
  * @param doamin: AF_INET or AF_INET6
@@ -48,7 +48,7 @@ int w_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 int w_bind_local(int sockfd, int domain, unsigned short port);
 
 /*
- * @description: assign the network interface IPv4 or IPv6 address
+ * @description: assigns the network interface IPv4 or IPv6 address
  * 
  * @param addr: the pointer to the address structure
  * @param addrlen: the length in bytes of the address structure

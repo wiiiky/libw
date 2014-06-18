@@ -29,11 +29,15 @@
 #define STMT_START  do{
 #define STMT_EDN	}while(0)
 
+/*
+ * #expr: convert expression ptr!=NULL to string "ptr!=NULL"
+ */
+
 #define WL_RETURN_VAL_IF_FAIL(expr,val) STMT_START if(!(expr))\
-							{return (val);} STMT_EDN
+							{WDEBUG("%s failed\n", #expr); return (val);} STMT_EDN
 
 #define WL_RETURN_IF_FAIL(expr) STMT_START if(!(expr))\
-							{return;} STMT_EDN
+							{WDEBUG("%s failed\n", #expr); return;} STMT_EDN
 
 #define LARGE_BUF  (1024)
 #define MEDIUM__BUF   (256)

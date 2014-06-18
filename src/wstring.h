@@ -28,7 +28,7 @@
 #define w_realloc(ptr,size) realloc(ptr,size)
 
 /*
- * @description: duplicate a string
+ * @description: duplicates a string
  * 
  * @param str: the source string
  * @return: a new allocated string or NULL if failed
@@ -46,7 +46,7 @@ char *w_strndup(const char *str, int n);
 
 
 /*
- * @description: create a formated string
+ * @description: creates a formated string
  * 
  * @params : see printf document for details
  * 
@@ -58,7 +58,7 @@ char *w_strdup_printf(const char *format, ...);
 
 
 /*
- * @description: compare two strings, handles NULL,
+ * @description: compares two strings, handles NULL,
  *              compares two NULL pointers returns 0,
  *              sorts NULL pointer before non-NULL string.
  * 

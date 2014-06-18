@@ -32,7 +32,7 @@ typedef void *(WSortNew) ();
 typedef void (*WSortFree) (void *a);
 
 /*
- * @descriptioin: sort an array of any type using quick sort
+ * @descriptioin: sorts an array of any type using quick sort
  * 
  * @param data: the array, any type
  * @param count: the size of array
