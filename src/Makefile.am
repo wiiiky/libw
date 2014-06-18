@@ -21,7 +21,8 @@ libwl_la_SOURCES = \
 	whashtable.c \
 	wio.c \
 	winet.c \
-	wsort.c
+	wsort.c \
+	wqueue.c
 
 libwl_la_LDFLAGS = 
 
@@ -38,7 +39,8 @@ include_HEADERS = \
 	whashtable.h \
 	wio.h \
 	winet.h \
-	wsort.h
+	wsort.h \
+	wqueue.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libwl-0.1.pc

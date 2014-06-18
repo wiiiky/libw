@@ -116,7 +116,7 @@ int w_is_fd_fifo(int fd)
 typedef struct {
     unsigned int size;          /* total size */
     unsigned int start;         /* the start position of buffer */
-    unsigned int len;           /* valid buffer size,including \0 */
+    unsigned int len;           /* valid buffer size */
     char *buf;
 } ReadlineBuf;
 

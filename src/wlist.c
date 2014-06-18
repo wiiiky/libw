@@ -114,29 +114,29 @@ void w_list_foreach(WList * list, WForeachFunc func, void *user_data)
     }
 }
 
-void w_list_free(WList * list)
+static void w_list_free_internal(WList * list, WListDestroy destroy)
 {
-    WL_RETURN_IF_FAIL(list != NULL);
-
     WList *lp = w_list_next(list);
     while (list) {
         lp = w_list_next(list);
+        if (destroy) {
+            destroy(list->data);
+        }
         free(list);
         list = lp;
     }
 }
 
+void w_list_free(WList * list)
+{
+    WL_RETURN_IF_FAIL(list != NULL);
+    w_list_free_internal(list, NULL);
+}
+
 void w_list_free_full(WList * list, WListDestroy destroy)
 {
     WL_RETURN_IF_FAIL(list != NULL);
-
-    WList *lp = w_list_next(list);
-    while (list) {
-        lp = w_list_next(list);
-        destroy(list->data);
-        free(list);
-        list = lp;
-    }
+    w_list_free_internal(list, destroy);
 }
 
 WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b)

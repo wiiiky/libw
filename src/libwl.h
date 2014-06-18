@@ -26,5 +26,6 @@
 #include "wlog.h"
 #include "wsort.h"
 #include "whashtable.h"
+#include "wqueue.h"
 
 #endif
