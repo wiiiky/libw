@@ -116,11 +116,16 @@ void *w_async_queue_try_pop_unlocked(WAsyncQueue * queue);
 /*
  * @description: tries to pop data from queue. This function will return immediately.
  * 
- * @return: the pointer to the data if avaiable, or NULL if no data avaiable
+ * @return: the pointer to the data if avaiable, or NULL if no data avaiable at present
  */
 void *w_async_queue_try_pop(WAsyncQueue * queue);
 
-/* TODO */
+/*
+ * @description: tries to pop data from queue. If no data available at present,
+ *               this function will block
+ * 
+ * @return : the pointer to the data, NULL on error
+ */
 void *w_async_queue_pop_unlocked(WAsyncQueue * queue);
 void *w_async_queue_pop(WAsyncQueue * queue);
 

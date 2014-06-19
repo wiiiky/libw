@@ -2,10 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <pthread.h>
 
 
 #define S(str)	strdup(str)
 
+
+static void *thread(void *arg);
 
 int main(int argc, char *argv[])
 {
@@ -42,5 +46,34 @@ int main(int argc, char *argv[])
     w_async_queue_unlock(aqueue);
 
     w_async_queue_free(aqueue);
+
+    aqueue = w_async_queue_new_full(free);
+    w_async_queue_push(aqueue, S("First"));
+    w_async_queue_push(aqueue, S("Second"));
+    w_async_queue_push(aqueue, S("Third"));
+
+    pthread_t tid;
+    w_async_queue_ref(aqueue);
+    pthread_create(&tid, NULL, thread, aqueue);
+    int count = 0;
+    while (count++ < 10) {
+        sleep(1);
+        w_async_queue_push(aqueue, S("hello"));
+    }
+    w_async_queue_unref(aqueue);
     return 0;
+}
+
+static void *thread(void *arg)
+{
+    WAsyncQueue *queue = (WAsyncQueue *) arg;
+
+    void *data = NULL;
+    int i = 0;
+    while (data = w_async_queue_pop(queue)) {
+        printf("%d:%s\n", ++i, (char *) data);
+        free(data);
+    }
+    w_async_queue_unref(queue);
+    return NULL;
 }
