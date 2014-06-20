@@ -1,3 +1,11 @@
+2014-06-20	23:06 Wiky L <wiiiky@yeah.net>
+
+	* WAsyncQueue: a asynchronous queue that supports multi-threads communication
+
+2014-06-19	18:32 Wiky L <wiiiky@yeah.net>
+
+	* WQueue: standard queue data structure
+
 2014-06-12	16:59 Wiky L <wiiiky@yeah.net>
 
 	* WList: sort WList

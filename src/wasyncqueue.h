@@ -42,6 +42,14 @@ WAsyncQueue *w_async_queue_new_full(WAsyncQueueDestroy destroy);
 
 
 /*
+ * @description: return the length of WAsyncQueue
+ * 
+ * @return: the length of WAsyncQueue
+ */
+unsigned int w_async_queue_length(WAsyncQueue * queue);
+
+
+/*
  * @description: sets the destroy function for data that WAsyncQueue holds.
  *               Not need to hold the lock
  * 

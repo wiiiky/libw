@@ -50,6 +50,11 @@ WAsyncQueue *w_async_queue_new_full(WAsyncQueueDestroy destroy)
     return queue;
 }
 
+unsigned int w_async_queue_length(WAsyncQueue * queue)
+{
+    return w_queue_length(queue->queue);
+}
+
 void w_async_queue_set_destroy(WAsyncQueue * queue,
                                WAsyncQueueDestroy destroy)
 {
