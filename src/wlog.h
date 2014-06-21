@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef __WL_WLOG_H__
-#define __WL_WLOG_H__
+#ifndef __W_WLOG_H__
+#define __W_WLOG_H__
 
 /*
  * WLog logs a message to the terminal

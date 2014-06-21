@@ -1,5 +1,4 @@
-#include <whashtable.h>
-#include <wstring.h>
+#include <libw.h>
 #include <stdio.h>
 #include <stdlib.h>
 

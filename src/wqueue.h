@@ -15,8 +15,8 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
-#ifndef __WL_WQUEUE_H__
-#define __WL_WQUEUE_H__
+#ifndef __W_WQUEUE_H__
+#define __W_WQUEUE_H__
 
 
 /*

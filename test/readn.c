@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <libwl.h>
+#include <libw.h>
 
 int main(int argc, char *argv[])
 {

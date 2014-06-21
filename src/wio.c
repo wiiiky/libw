@@ -93,7 +93,7 @@ static int w_is_fd_type_internal(int fd, int mode)
 {
     struct stat statbuf;
     int ret = fstat(fd, &statbuf);
-    if (WL_UNLIKELY(ret != 0)) {
+    if (W_UNLIKELY(ret != 0)) {
         return 0;
     }
     if (((statbuf.st_mode & S_IFMT) == (mode_t) mode)) {
@@ -268,7 +268,7 @@ static ReadlineBuf *get_pthread_data(void)
 
 int w_readline(int fd, void *buf, unsigned int count)
 {
-    WL_RETURN_VAL_IF_FAIL(count != 0, 0);
+    W_RETURN_VAL_IF_FAIL(count != 0, 0);
 
     ReadlineBuf *lbuf = get_pthread_data();
 
@@ -298,7 +298,7 @@ int w_readline(int fd, void *buf, unsigned int count)
 
 int w_readline_buffer(void *buf, unsigned int count)
 {
-    WL_RETURN_VAL_IF_FAIL(count != 0, 0);
+    W_RETURN_VAL_IF_FAIL(count != 0, 0);
 
     ReadlineBuf *lbuf = get_pthread_data();
 

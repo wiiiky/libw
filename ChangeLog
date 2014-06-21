@@ -1,3 +1,7 @@
+2014-06-21	20:39 Wiky L <wiiiky@yeah.net>
+
+	* libw: rename this library to libw
+
 2014-06-20	23:06 Wiky L <wiiiky@yeah.net>
 
 	* WAsyncQueue: a asynchronous queue that supports multi-threads communication

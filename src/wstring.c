@@ -24,13 +24,13 @@
 
 char *w_strdup(const char *str)
 {
-    WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(str != NULL, NULL);
     return strdup(str);
 }
 
 char *w_strndup(const char *str, int n)
 {
-    WL_RETURN_VAL_IF_FAIL(str != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(str != NULL, NULL);
     if (n < 0) {
         return strdup(str);
     }
@@ -39,7 +39,7 @@ char *w_strndup(const char *str, int n)
 
 char *w_strdup_printf(const char *format, ...)
 {
-    WL_RETURN_VAL_IF_FAIL(format != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(format != NULL, NULL);
 
     va_list vl;
     char buf[LARGE_BUF];

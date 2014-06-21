@@ -1,4 +1,4 @@
-#include <libwl.h>
+#include <libw.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>

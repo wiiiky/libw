@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef __WL_LIBWL_H__
-#define __WL_LIBWL_H__
+#ifndef __W_LIBW_H__
+#define __W_LIBW_H__
 
 #include "wstring.h"
 #include "wlist.h"
@@ -28,5 +28,6 @@
 #include "whashtable.h"
 #include "wqueue.h"
 #include "wasyncqueue.h"
+#include "whttp.h"
 
 #endif

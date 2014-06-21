@@ -11,10 +11,10 @@ AM_CFLAGS =\
 	 -Wall\
 	 -g
 
-lib_LTLIBRARIES = libwl.la
+lib_LTLIBRARIES = libw.la
 
 
-libwl_la_SOURCES = \
+libw_la_SOURCES = \
 	wlist.c \
 	wlog.c \
 	wstring.c \
@@ -23,16 +23,17 @@ libwl_la_SOURCES = \
 	winet.c \
 	wsort.c \
 	wasyncqueue.c \
-	wqueue.c
+	wqueue.c \
+	whttp.c
 
-libwl_la_LDFLAGS = 
+libw_la_LDFLAGS = 
 
-libwl_la_LIBADD = 
+libw_la_LIBADD = 
 
 
 
 include_HEADERS = \
-	libwl.h \
+	libw.h \
 	wlist.h \
 	m4.h \
 	wlog.h \
@@ -42,10 +43,11 @@ include_HEADERS = \
 	winet.h \
 	wsort.h \
 	wasyncqueue.h \
-	wqueue.h
+	wqueue.h \
+	whttp.h
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libwl-0.1.pc
+pkgconfig_DATA = libw-0.1.pc
 
 EXTRA_DIST = \
-	libwl-0.1.pc.in
+	libw-0.1.pc.in

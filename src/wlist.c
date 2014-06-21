@@ -64,7 +64,7 @@ static inline WList *w_list_append_element(WList * list, WList * ele)
 WList *w_list_append(WList * list, void *data)
 {
     WList *ele = w_list_alloc(data);
-    WL_RETURN_VAL_IF_FAIL(ele != NULL, list);
+    W_RETURN_VAL_IF_FAIL(ele != NULL, list);
 
     return w_list_append_element(list, ele);
 }
@@ -87,7 +87,7 @@ WList *w_list_insert(WList * list, void *data, int position)
     }
 
     WList *ele = w_list_alloc(data);
-    WL_RETURN_VAL_IF_FAIL(ele != NULL, list);
+    W_RETURN_VAL_IF_FAIL(ele != NULL, list);
 
     /* insert data before ptr */
     if (w_list_prev(ptr) == NULL) {
@@ -105,7 +105,7 @@ WList *w_list_insert(WList * list, void *data, int position)
 
 void w_list_foreach(WList * list, WForeachFunc func, void *user_data)
 {
-    WL_RETURN_IF_FAIL(list != NULL);
+    W_RETURN_IF_FAIL(list != NULL);
 
     while (list) {
         /* call function for each element */
@@ -142,7 +142,7 @@ void w_list_free_full(WList * list, WListDestroy destroy)
 
 WList *w_list_find_custom(WList * list, WCompareFunc func, const void *b)
 {
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
     while (list) {
         if (func(list->data, b) == 0) {
@@ -184,7 +184,7 @@ static WList *w_list_element_detach(WList * element)
 
 WList *w_list_sort_bubble(WList * list, WCompareFunc func)
 {
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
     WList *new = NULL, *head = list;
     while (head) {
@@ -244,7 +244,7 @@ static WList *w_list_insert_element_sorted(WList * list, WList * ele,
 
 WList *w_list_sort_insertion(WList * list, WCompareFunc func)
 {
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
     WList *new = NULL;
     WList *ptr = list;
@@ -264,7 +264,7 @@ WList *w_list_insert_sorted(WList * list, void *data, WCompareFunc func)
 
 WList *w_list_find(WList * list, void *data)
 {
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
     while (list) {
         if (list->data == data) {
             return list;
@@ -280,7 +280,7 @@ WList *w_list_find(WList * list, void *data)
 static WList *w_list_remove_internal(WList * list, void *data,
                                      WListDestroy destroy)
 {
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
     WList *rm = w_list_find(list, data);
     if (rm == NULL) {           /* not find */
@@ -303,7 +303,7 @@ WList *w_list_remove_full(WList * list, void *data, WListDestroy destroy)
 
 WList *w_list_reverse(WList * list)
 {
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
 
     while (list) {
         WList *t = w_list_next(list);
@@ -322,7 +322,7 @@ WList *w_list_reverse(WList * list)
 WList *w_list_alloc(void *data)
 {
     WList *list = (WList *) malloc(sizeof(WList));
-    WL_RETURN_VAL_IF_FAIL(list != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(list != NULL, NULL);
     list->prev = list->next = NULL;
     list->data = data;
     return list;

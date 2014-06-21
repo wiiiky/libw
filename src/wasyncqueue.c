@@ -58,19 +58,19 @@ unsigned int w_async_queue_length(WAsyncQueue * queue)
 void w_async_queue_set_destroy(WAsyncQueue * queue,
                                WAsyncQueueDestroy destroy)
 {
-    WL_RETURN_IF_FAIL(queue != NULL);
+    W_RETURN_IF_FAIL(queue != NULL);
     queue->destroy = destroy;
 }
 
 void w_async_queue_ref(WAsyncQueue * queue)
 {
-    WL_RETURN_IF_FAIL(queue != NULL);
+    W_RETURN_IF_FAIL(queue != NULL);
     queue->ref++;
 }
 
 void w_async_queue_unref(WAsyncQueue * queue)
 {
-    WL_RETURN_IF_FAIL(queue != NULL);
+    W_RETURN_IF_FAIL(queue != NULL);
     if (--queue->ref == 0) {
         w_async_queue_free(queue);
     }
@@ -78,7 +78,7 @@ void w_async_queue_unref(WAsyncQueue * queue)
 
 void w_async_queue_free(WAsyncQueue * queue)
 {
-    WL_RETURN_IF_FAIL(queue != NULL);
+    W_RETURN_IF_FAIL(queue != NULL);
     w_queue_free_full(queue->queue, queue->destroy);
     pthread_mutex_destroy(&queue->lock);
     pthread_cond_destroy(&queue->cond);
@@ -118,14 +118,14 @@ static inline void w_async_queue_cond_wait(WAsyncQueue * queue)
 
 void w_async_queue_push_unlocked(WAsyncQueue * queue, void *data)
 {
-    WL_RETURN_IF_FAIL(queue != NULL && data != NULL);
+    W_RETURN_IF_FAIL(queue != NULL && data != NULL);
     w_async_queue_push_unlocked_internal(queue, data);
     w_async_queue_cond_signal(queue);
 }
 
 void w_async_queue_push(WAsyncQueue * queue, void *data)
 {
-    WL_RETURN_IF_FAIL(queue != NULL && data != NULL);
+    W_RETURN_IF_FAIL(queue != NULL && data != NULL);
     w_async_queue_lock(queue);
     w_async_queue_push_unlocked_internal(queue, data);
     w_async_queue_unlock(queue);
@@ -142,13 +142,13 @@ static inline void *w_async_queue_try_pop_unlocked_internal(WAsyncQueue *
 
 void *w_async_queue_try_pop_unlocked(WAsyncQueue * queue)
 {
-    WL_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
     return w_async_queue_try_pop_unlocked_internal(queue);
 }
 
 void *w_async_queue_try_pop(WAsyncQueue * queue)
 {
-    WL_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
     void *data = NULL;
     w_async_queue_lock(queue);
     data = w_async_queue_try_pop_unlocked_internal(queue);
@@ -171,13 +171,13 @@ static inline void *w_async_queue_pop_unlocked_internal(WAsyncQueue *
 
 void *w_async_queue_pop_unlocked(WAsyncQueue * queue)
 {
-    WL_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
     return w_async_queue_pop_unlocked_internal(queue);
 }
 
 void *w_async_queue_pop(WAsyncQueue * queue)
 {
-    WL_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
     void *data = NULL;
     w_async_queue_lock(queue);
     data = w_async_queue_pop_unlocked_internal(queue);

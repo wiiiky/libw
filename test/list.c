@@ -1,4 +1,4 @@
-#include <libwl.h>
+#include <libw.h>
 #include <stdio.h>
 
 static int compare1(const void *a, const void *b)

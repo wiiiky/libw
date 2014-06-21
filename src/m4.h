@@ -17,13 +17,13 @@
  */
 
 
-#ifndef __WL_M4_H__
-#define __WL_M4_H__
+#ifndef __W_M4_H__
+#define __W_M4_H__
 
 #include "wlog.h"
 
-#define WL_LIKELY(x) __builtin_expect(!!(x),1)
-#define WL_UNLIKELY(x) __builtin_expect(!!(x),0)
+#define W_LIKELY(x) __builtin_expect(!!(x),1)
+#define W_UNLIKELY(x) __builtin_expect(!!(x),0)
 
 
 #define STMT_START  do{
@@ -33,10 +33,10 @@
  * #expr: convert expression ptr!=NULL to string "ptr!=NULL"
  */
 
-#define WL_RETURN_VAL_IF_FAIL(expr,val) STMT_START if(!(expr))\
+#define W_RETURN_VAL_IF_FAIL(expr,val) STMT_START if(!(expr))\
 							{WDEBUG("%s failed\n", #expr); return (val);} STMT_EDN
 
-#define WL_RETURN_IF_FAIL(expr) STMT_START if(!(expr))\
+#define W_RETURN_IF_FAIL(expr) STMT_START if(!(expr))\
 							{WDEBUG("%s failed\n", #expr); return;} STMT_EDN
 
 #define LARGE_BUF  (1024)

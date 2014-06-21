@@ -15,8 +15,8 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
-#ifndef __WL_WSTRING_H__
-#define __WL_WSTRING_H__
+#ifndef __W_WSTRING_H__
+#define __W_WSTRING_H__
 
 /*
  * string and memory functions

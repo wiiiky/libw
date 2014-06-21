@@ -184,7 +184,7 @@ static inline WHashTableNode *w_hash_table_find_node(WHashTable * h,
 
 int w_hash_table_insert(WHashTable * h, void *key, void *value)
 {
-    WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
+    W_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
 
     WHashTableNode *node = w_hash_table_find_node(h, key);
     if (node == NULL) {         /* if not exists, insert */
@@ -204,7 +204,7 @@ int w_hash_table_insert(WHashTable * h, void *key, void *value)
 
 int w_hash_table_update(WHashTable * h, void *key, void *value)
 {
-    WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
+    W_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
 
     WHashTableNode *node = w_hash_table_find_node(h, key);
     if (node == NULL) {         /* not found */
@@ -222,7 +222,7 @@ static inline int w_hash_table_remove_internal(WHashTable * h, void *key,
                                                WValueDestroyFunc
                                                value_func)
 {
-    WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
+    W_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, -1);
 
     WHashTableNode *node = w_hash_table_find_node(h, key);
 
@@ -251,7 +251,7 @@ int w_hash_table_remove_full(WHashTable * h, void *key)
 
 void *w_hash_table_find(WHashTable * h, void *key)
 {
-    WL_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, NULL);
 
     WHashTableNode *node = w_hash_table_find_node(h, key);
 
@@ -264,7 +264,7 @@ void *w_hash_table_find(WHashTable * h, void *key)
 
 void w_hash_table_foreach(WHashTable * h, WNodeFunc node_func, void *data)
 {
-    WL_RETURN_IF_FAIL(h != NULL);
+    W_RETURN_IF_FAIL(h != NULL);
 
     WList *key = h->keys;
     while (key) {
@@ -278,7 +278,7 @@ void w_hash_table_foreach(WHashTable * h, WNodeFunc node_func, void *data)
 
 WList *w_hash_table_get_keys(WHashTable * h)
 {
-    WL_RETURN_VAL_IF_FAIL(h != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(h != NULL, NULL);
     return h->keys;
 }
 
@@ -287,7 +287,7 @@ static void w_hash_table_free_internal(WHashTable * h,
                                        WKeyDestroyFunc key_func,
                                        WValueDestroyFunc value_func)
 {
-    WL_RETURN_IF_FAIL(h != NULL);
+    W_RETURN_IF_FAIL(h != NULL);
 
     uint32_t i;
     for (i = 0; i < h->size; i++) {

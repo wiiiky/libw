@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT(libwl, 0.1)
+AC_INIT(libw, 0.1)
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -26,6 +26,6 @@ LT_INIT
 
 AC_OUTPUT([
 Makefile
-src/libwl-0.1.pc
+src/libw-0.1.pc
 src/Makefile
 ])

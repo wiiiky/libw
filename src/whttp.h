@@ -15,32 +15,41 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
+#ifndef __W_WHTTP_H__
+#define __W_WHTTP_H__
 
-#include "wlog.h"
-#include "m4.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
 
-void wlog(WLogType type, const char *file, int line, const char *format,
-          ...)
-{
-    W_RETURN_IF_FAIL(format != NULL);
+/*
+ * the structure of WHttpHeaders is private
+ */
+typedef struct _WHttpHeaders WHttpHeaders;
 
-    va_list args;
-    va_start(args, format);
 
-    switch (type) {
-    case WLOG_VERBOSE:
-        break;
-    case WLOG_DEBUG:
-        fprintf(stderr, "\033[01;33mDebug(%s:%d)\033[0m: ", file, line);
-        break;
-    case WLOG_ERROR:
-        fprintf(stderr, "\033[01;31mError(%s:%d)\033[0m: ", file, line);
-        break;
-    default:
-        break;
-    }
-    vfprintf(stderr, format, args);
-}
+/*
+ * @description: create a new WHttpHeaders
+ * 
+ * @return:
+ */
+WHttpHeaders *w_http_headers_new(void);
+
+
+/*
+ * @description: destroy a WHttpHeaders
+ */
+void w_http_headers_free(WHttpHeaders * hdrs);
+
+
+/*
+ * @description: append a new Http Header with name and value to hdrs,
+ *               if name already exists, its value is replaced.
+ * 
+ * @param hdrs: WHttpHeaders
+ * @param name: the name of new Http Header
+ * @param value: the value of new Http Header
+ */
+void w_http_headers_append(WHttpHeaders * hdrs,
+                           const char *name, const char *value);
+
+
+
+#endif

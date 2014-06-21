@@ -10,7 +10,7 @@ SOURCE=$(SOURCE_DIR)/whashtable.c $(SOURCE_DIR)/wlist.c \
 	   $(SOURCE_DIR)/wstring.c $(SOURCE_DIR)/wio.c \
 	   $(SOURCE_DIR)/wsort.c $(SOURCE_DIR)/wlog.c \
 	   $(SOURCE_DIR)/winet.c $(SOURCE_DIR)/wqueue.c \
-	   $(SOURCE_DIR)/wasyncqueue.c
+	   $(SOURCE_DIR)/wasyncqueue.c $(SOURCE_DIR)/whttp.c
 
 all:hashtable readline readn list sort queue
 

@@ -3,11 +3,11 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 datarootdir=@datarootdir@
 datadir=@datadir@
-includedir=@includedir@/liblibwl-0.1
+includedir=@includedir@/libw-0.1
 
-Name: liblibwl
+Name: libw
 Description: Sample library created by Anjuta project wizard.
 Version: @VERSION@
 Requires: 
-Libs: -L${libdir} -llibwl
+Libs: -L${libdir} -llibw
 Cflags: -I${includedir}

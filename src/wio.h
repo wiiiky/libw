@@ -15,8 +15,8 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
-#ifndef __WL_WIO_H__
-#define __WL_WIO_H__
+#ifndef __W_WIO_H__
+#define __W_WIO_H__
 
 /*
  * wraper of read()
@@ -80,6 +80,7 @@ int w_is_fd_fifo(int fd);
  * @return: the size read
  */
 int w_readline(int fd, void *buf, unsigned int count);
+
 
 
 /*

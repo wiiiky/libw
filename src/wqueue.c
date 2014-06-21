@@ -43,7 +43,7 @@ unsigned int w_queue_length(WQueue * queue)
 
 void w_queue_push(WQueue * queue, void *data)
 {
-    WL_RETURN_IF_FAIL(queue != NULL && data != NULL);
+    W_RETURN_IF_FAIL(queue != NULL && data != NULL);
     WList *ele = w_list_alloc(data);
     if (queue->last) {
         queue->last->next = ele;
@@ -58,7 +58,7 @@ void w_queue_push(WQueue * queue, void *data)
 
 void *w_queue_pop(WQueue * queue)
 {
-    WL_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
+    W_RETURN_VAL_IF_FAIL(queue != NULL, NULL);
 
     void *data = NULL;
     if (queue->first) {
@@ -83,7 +83,7 @@ void w_queue_free(WQueue * queue)
 
 void w_queue_free_full(WQueue * queue, WQueueDestroy destroy)
 {
-    WL_RETURN_IF_FAIL(queue != NULL);
+    W_RETURN_IF_FAIL(queue != NULL);
 
     w_list_free_full(queue->first, destroy);
     free(queue);
