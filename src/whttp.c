@@ -21,14 +21,41 @@
 #include "wstring.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 
 struct _WHttpHeaders {
     WHashTable *headers;
 };
 
+struct _WHttpRequest {
+    WHttpMethod method;
+    char *path;
+    WHttpVersion version;
+    WHttpHeaders *hdrs;
+};
 
-WHttpHeaders *w_httper_headers_new(void)
+/*
+ * ignore the case of characters
+ */
+static int w_str_equal_case(const void *s1, const void *s2)
+{
+    return strcasecmp((const char *) s1, (const char *) s2);
+}
+
+static unsigned int w_str_hash_case(const void *data)
+{
+    const char *s = (const char *) data;
+    unsigned int h = 0;
+    while (*s) {
+        h = (h << 3) + w_tolower(*s);
+        s++;
+    }
+    return h;
+}
+
+
+WHttpHeaders *w_http_headers_new()
 {
     /*
      * Is 5 (31 buckets) is a good default ? FIXME
@@ -38,7 +65,7 @@ WHttpHeaders *w_httper_headers_new(void)
         return NULL;
     }
     hdrs->headers =
-        w_hash_table_new(5, w_str_hash, w_str_equal, free, free);
+        w_hash_table_new(5, w_str_hash_case, w_str_equal_case, free, free);
     if (W_UNLIKELY(hdrs->headers == NULL)) {
         free(hdrs);
         return NULL;
@@ -46,7 +73,7 @@ WHttpHeaders *w_httper_headers_new(void)
     return hdrs;
 }
 
-void w_httper_headers_free(WHttpHeaders * hdrs)
+void w_http_headers_free(WHttpHeaders * hdrs)
 {
     W_RETURN_IF_FAIL(hdrs != NULL);
     w_hash_table_free_full(hdrs->headers);
@@ -59,4 +86,11 @@ void w_http_headers_append(WHttpHeaders * hdrs,
     W_RETURN_IF_FAIL(hdrs != NULL && name != NULL && value != NULL);
 
     w_hash_table_insert(hdrs->headers, w_strdup(name), w_strdup(value));
+}
+
+const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name)
+{
+    W_RETURN_VAL_IF_FAIL(hdrs != NULL && name != NULL, NULL);
+
+    return (const char *) w_hash_table_find(hdrs->headers, name);
 }

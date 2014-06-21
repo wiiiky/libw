@@ -20,9 +20,33 @@
 
 
 /*
- * the structure of WHttpHeaders is private
+ * HTTP request method
+ * 
+ * GET,POST,PUT,HEAD,DELETE
+ */
+typedef enum {
+    W_HTTP_GET = 1,
+    W_HTTP_POST,
+    W_HTTP_PUT,
+    W_HTTP_HEAD,
+    W_HTTP_DELETE,
+} WHttpMethod;
+
+/*
+ * HTTP version
+ * 0.9, 1.0, 1.1
+ */
+typedef enum {
+    W_HTTP_0_9 = 1,
+    W_HTTP_1_0,
+    W_HTTP_1_1,
+} WHttpVersion;
+
+/*
+ * the structures of WHttpHeaders, WHttpRequest are private
  */
 typedef struct _WHttpHeaders WHttpHeaders;
+typedef struct _WHttpRequest WHttpRequest;
 
 
 /*
@@ -30,7 +54,7 @@ typedef struct _WHttpHeaders WHttpHeaders;
  * 
  * @return:
  */
-WHttpHeaders *w_http_headers_new(void);
+WHttpHeaders *w_http_headers_new();
 
 
 /*
@@ -49,6 +73,15 @@ void w_http_headers_free(WHttpHeaders * hdrs);
  */
 void w_http_headers_append(WHttpHeaders * hdrs,
                            const char *name, const char *value);
+
+/*
+ * @description: get the value of HTTP Header with name
+ * 
+ * @param name: the name of HTTP Header
+ * 
+ * @return: the value of HTTP Header if name found, or NULL
+ */
+const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name);
 
 
 

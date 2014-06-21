@@ -155,7 +155,7 @@ static inline uint32_t w_hash_table_index(WHashTable * h, void *key)
  * return the node that contains given key
  */
 static inline WHashTableNode *w_hash_table_find_node(WHashTable * h,
-                                                     void *key)
+                                                     const void *key)
 {
     WList *lp = h->keys;
     while (lp) {
@@ -249,7 +249,7 @@ int w_hash_table_remove_full(WHashTable * h, void *key)
                                         h->value_func);
 }
 
-void *w_hash_table_find(WHashTable * h, void *key)
+void *w_hash_table_find(WHashTable * h, const void *key)
 {
     W_RETURN_VAL_IF_FAIL(h != NULL && key != NULL, NULL);
 
@@ -322,8 +322,8 @@ unsigned int w_str_hash(const void *p)
 {
     const char *s = (const char *) p;
     uint32_t hash = 0;
-    while (*s != '\0') {
-        hash = (hash << 5) + *s;
+    while (*s) {
+        hash = (hash << 4) + *s;
         s++;
     }
     return hash;

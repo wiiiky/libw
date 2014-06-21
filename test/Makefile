@@ -12,7 +12,7 @@ SOURCE=$(SOURCE_DIR)/whashtable.c $(SOURCE_DIR)/wlist.c \
 	   $(SOURCE_DIR)/winet.c $(SOURCE_DIR)/wqueue.c \
 	   $(SOURCE_DIR)/wasyncqueue.c $(SOURCE_DIR)/whttp.c
 
-all:hashtable readline readn list sort queue
+all:hashtable readline readn list sort queue http
 
 
 hashtable:hashtable.c $(SOURCE)
@@ -33,6 +33,9 @@ sort:sort.c $(SOURCE)
 queue:queue.c $(SOURCE)
 	$(CC) $(CFLAGS) queue.c $(SOURCE) -o queue
 
+http:http.c $(SOURCE)
+	$(CC) $(CFLAGS) http.c $(SOURCE) -o http
+ 
 clean:
-	indent -kr -ts4 -nut *.c
-	rm hashtable readline readn list sort queue *~
+	-indent -kr -ts4 -nut *.c
+	-rm -f hashtable readline readn list sort queue http *~

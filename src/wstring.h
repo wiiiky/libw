@@ -68,4 +68,33 @@ char *w_strdup_printf(const char *format, ...);
  */
 int w_strcmp0(const char *s1, const char *s2);
 
+/*
+ * @description: determines whether a character is an ASCII upper case letter
+ * 
+ * @return: 1 if c is a upper case letter, 0 if not.
+ */
+int w_isupper(char c);
+
+/*
+ * @description: convert an ASCII letter to its upper case
+ * 
+ * @return: the upper case of the character. non-lowercase leter unchanged
+ */
+char w_toupper(char c);
+
+/*
+ * @description: determines whether a character is an ASCII lower case letter
+ * 
+ * @return: 1 if c is a lower case letter, 0 if not.
+ */
+int w_islower(char c);
+
+
+/*
+ * @description: convert an ASCII letter to its lower case
+ * 
+ * @return: the lower case of the character. non-uppercase leter unchanged
+ */
+char w_tolower(char c);
+
 #endif

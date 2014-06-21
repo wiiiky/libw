@@ -105,7 +105,7 @@ int w_hash_table_remove_full(WHashTable * h, void *key);
  * 
  * @return: the value if found, or NULL
  */
-void *w_hash_table_find(WHashTable * h, void *key);
+void *w_hash_table_find(WHashTable * h, const void *key);
 
 
 /*

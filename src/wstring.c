@@ -64,3 +64,29 @@ int w_strcmp0(const char *s1, const char *s2)
     }
     return strcmp(s1, s2);
 }
+
+int w_isupper(char c)
+{
+    if (c >= 'A' && c <= 'Z') {
+        return 1;
+    }
+    return 0;
+}
+
+char w_toupper(char c)
+{
+    return w_islower(c) ? (c - 'a' + 'A') : c;
+}
+
+int w_islower(char c)
+{
+    if (c >= 'a' && c <= 'z') {
+        return 1;
+    }
+    return 0;
+}
+
+char w_tolower(char c)
+{
+    return w_isupper(c) ? (c - 'A' + 'a') : c;
+}
