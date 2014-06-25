@@ -19,8 +19,7 @@
 #define __W_WASYNCQUEUE_H__
 
 /*
- * WAsyncQueue, a queue that support multi-threads.
- * 			Can be used to transfer data in threads.
+ * WAsyncQueue, a queue that is used for multi-threads communication.
  */
 
 /*
