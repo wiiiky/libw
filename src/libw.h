@@ -19,6 +19,10 @@
 #ifndef __W_LIBW_H__
 #define __W_LIBW_H__
 
+/*
+ * include all headers
+ */
+
 #include "wstring.h"
 #include "wlist.h"
 #include "wio.h"

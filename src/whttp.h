@@ -43,10 +43,11 @@ typedef enum {
 } WHttpVersion;
 
 /*
- * the structures of WHttpHeaders, WHttpRequest are private
+ * the structures of WHttpHeaders, WHttpRequest and WHttpResponse are private
  */
 typedef struct _WHttpHeaders WHttpHeaders;
 typedef struct _WHttpRequest WHttpRequest;
+typedef struct _WHttpResponse WHttpResponse;
 
 
 /*

@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <inttypes.h>
 
 
 struct _WHttpHeaders {
@@ -32,6 +33,13 @@ struct _WHttpRequest {
     WHttpMethod method;
     char *path;
     WHttpVersion version;
+    WHttpHeaders *hdrs;
+};
+
+struct _WHttpResponse {
+    WHttpVersion version;
+    uint32_t status;
+    char *phrase;
     WHttpHeaders *hdrs;
 };
 
