@@ -85,5 +85,19 @@ void w_http_headers_append(WHttpHeaders * hdrs,
 const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name);
 
 
+/*
+ * @description: create a new HTTP request with method, path and version
+ * 
+ * @param method: the HTTP request method, GET, POST, etc
+ * @param path: the HTTP request path, / ,/index.html
+ * @param version: the HTTP version, HTTP/1.1 HTTP/1.0
+ * 
+ * @return: the new WHttpRequest
+ */
+WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
+                                 WHttpVersion version);
+WHttpRequest *w_http_request_new_from_data(const char *data);
+
+
 
 #endif

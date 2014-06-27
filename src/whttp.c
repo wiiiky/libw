@@ -102,3 +102,21 @@ const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name)
 
     return (const char *) w_hash_table_find(hdrs->headers, name);
 }
+
+
+WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
+                                 WHttpVersion version)
+{
+    WHttpRequest *req = (WHttpRequest *) malloc(sizeof(WHttpRequest));
+    req->method = method;
+    req->path = strdup(path);
+    req->version = version;
+    req->hdrs = w_http_headers_new();
+    return req;
+}
+
+WHttpRequest *w_http_request_new_from_data(const char *data)
+{
+    /* TODO */
+    return NULL;
+}

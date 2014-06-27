@@ -3,7 +3,7 @@ Maximized=1
 Geometry=1301x744+65+24
 
 [File Loader]
-Files=../../src/whttp.h#50%%%../../src/whttp.c#25%%%../../src/whashtable.h#108%%%../../src/whashtable.c#252%%%../../src/wstring.h#98%%%../../src/wstring.c#91%%%../../src/libw.h#25%%%../../src/wlist.c#1%%%../../src/wqueue.h#1%%%../../src/wasyncqueue.c#1%%%../../src/wasyncqueue.h#22
+Files=../../src/whttp.c#119%%%../../src/whttp.h#96
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
