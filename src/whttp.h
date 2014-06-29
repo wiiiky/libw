@@ -48,6 +48,7 @@ typedef enum {
 typedef struct _WHttpHeaders WHttpHeaders;
 typedef struct _WHttpRequest WHttpRequest;
 typedef struct _WHttpResponse WHttpResponse;
+typedef struct _WHttpBody WHttpBody;
 
 
 /*
@@ -83,6 +84,15 @@ void w_http_headers_append(WHttpHeaders * hdrs,
  * @return: the value of HTTP Header if name found, or NULL
  */
 const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name);
+
+
+/*
+ * WHttpBody
+ */
+WHttpBody *w_http_body_new();
+WHttpBody *w_http_body_new_from_data(const char *data);
+const char *w_http_body_get_data(WHttpBody * body);
+unsigned int w_http_body_get_length(WHttpBody * body);
 
 
 /*
@@ -129,7 +139,13 @@ const char *w_http_request_get_path(WHttpRequest * req);
  */
 WHttpVersion w_http_request_get_version(WHttpRequest * req);
 
-
+/*
+ * @description: parses the data to create WHttpRequest.
+ * 
+ * @param data: the string that contains HTTP request data
+ * 
+ * @return: a new WHttpRequest, or NULL on error
+ */
 WHttpRequest *w_http_request_new_from_data(const char *data);
 
 

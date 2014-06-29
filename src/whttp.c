@@ -29,11 +29,17 @@ struct _WHttpHeaders {
     WHashTable *headers;
 };
 
+struct _WHttpBody {
+    char *data;
+    unsigned int length;
+};
+
 struct _WHttpRequest {
     WHttpMethod method;
     char *path;
     WHttpVersion version;
     WHttpHeaders *hdrs;
+    WHttpBody *body;
 };
 
 struct _WHttpResponse {
@@ -41,7 +47,10 @@ struct _WHttpResponse {
     uint32_t status;
     char *phrase;
     WHttpHeaders *hdrs;
+    WHttpBody *body;
 };
+
+/**************************** WHttpHeaders ***********************************/
 
 /*
  * ignore the case of characters
@@ -61,7 +70,6 @@ static unsigned int w_str_hash_case(const void *data)
     }
     return h;
 }
-
 
 WHttpHeaders *w_http_headers_new()
 {
@@ -103,7 +111,19 @@ const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name)
     return (const char *) w_hash_table_find(hdrs->headers, name);
 }
 
+/***************************** WHttpBody ************************************/
+WHttpBody *w_http_body_new()
+{
+    WHttpBody *body = (WHttpBody *) malloc(sizeof(WHttpBody));
+    return body;
+}
 
+WHttpBody *w_http_body_new_from_data(const char *data);
+const char *w_http_body_get_data(WHttpBody * body);
+unsigned int w_http_body_get_length(WHttpBody * body);
+
+
+/***************************** WHttpRequest **********************************/
 WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
                                  WHttpVersion version)
 {

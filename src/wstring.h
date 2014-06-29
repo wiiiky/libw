@@ -97,4 +97,19 @@ int w_islower(char c);
  */
 char w_tolower(char c);
 
+
+/********************************** WString *******************************/
+typedef struct _WString WString;
+
+WString *w_string_new();
+
+WString *w_string_new_with_data(const char *data);
+
+const char *w_string_get_data(WString * string);
+unsigned int w_string_get_length(WString * string);
+
+void w_string_append(WString * string, const char *data);
+void w_string_append_char(WString * string, char ch);
+
+
 #endif

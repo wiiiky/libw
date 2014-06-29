@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 char *w_strdup(const char *str)
 {
@@ -89,4 +90,87 @@ int w_islower(char c)
 char w_tolower(char c)
 {
     return w_isupper(c) ? (c - 'A' + 'a') : c;
+}
+
+/************************** WString ******************************/
+
+struct _WString {
+    char *data;
+    unsigned int len;
+    unsigned int allocated_len;
+};
+
+#define W_STRING_MIN    128
+
+static inline unsigned int w_string_get_odd(WString * string)
+{
+    return string->allocated_len - string->len;
+}
+
+WString *w_string_new()
+{
+    WString *str = (WString *) malloc(sizeof(WString));
+    str->data = (char *) malloc(sizeof(char) * W_STRING_MIN);
+    str->len = 0;
+    str->allocated_len = W_STRING_MIN;
+    str->data[0] = '\0';
+
+    return str;
+}
+
+WString *w_string_new_with_data(const char *data)
+{
+    WString *string = w_string_new();
+    w_string_append(string, data);
+    return string;
+}
+
+static inline void w_string_enlarge_internal(WString * string)
+{
+    string->allocated_len = string->allocated_len << 1;
+    string->data = realloc(string->data, string->allocated_len);
+}
+
+static inline void w_string_enlarge(WString * string, unsigned int len)
+{
+    while (w_string_get_odd(string) <= len) {
+        w_string_enlarge_internal(string);
+    }
+}
+
+static inline void w_string_append_internal(WString * string,
+                                            const char *data,
+                                            unsigned int len)
+{
+    strncpy(string->data + string->len, data, len + 1);
+    string->len += len;
+}
+
+static inline void w_string_append_char_internal(WString * string, char ch)
+{
+    string->data[string->len] = ch;
+    string->len++;
+}
+
+const char *w_string_get_data(WString * string)
+{
+    return string->data;
+}
+
+unsigned int w_string_get_length(WString * string)
+{
+    return string->len;
+}
+
+void w_string_append(WString * string, const char *data)
+{
+    unsigned int len = strlen(data);
+    w_string_enlarge(string, len);
+    w_string_append_internal(string, data, len);
+}
+
+void w_string_append_char(WString * string, char ch)
+{
+    w_string_enlarge(string, 1);
+    w_string_append_char_internal(string, ch);
 }
