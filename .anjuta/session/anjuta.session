@@ -3,7 +3,7 @@ Maximized=1
 Geometry=1301x744+65+24
 
 [File Loader]
-Files=../../src/whttp.c#119%%%../../src/whttp.h#96
+Files=../../src/whttp.c#127%%%../../src/whttp.h#124
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n

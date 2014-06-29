@@ -51,7 +51,7 @@ typedef struct _WHttpResponse WHttpResponse;
 
 
 /*
- * @description: create a new WHttpHeaders
+ * @description: creates a new WHttpHeaders
  * 
  * @return:
  */
@@ -59,7 +59,7 @@ WHttpHeaders *w_http_headers_new();
 
 
 /*
- * @description: destroy a WHttpHeaders
+ * @description: destroys a WHttpHeaders
  */
 void w_http_headers_free(WHttpHeaders * hdrs);
 
@@ -76,7 +76,7 @@ void w_http_headers_append(WHttpHeaders * hdrs,
                            const char *name, const char *value);
 
 /*
- * @description: get the value of HTTP Header with name
+ * @description: gets the value of HTTP Header with name
  * 
  * @param name: the name of HTTP Header
  * 
@@ -86,7 +86,7 @@ const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name);
 
 
 /*
- * @description: create a new HTTP request with method, path and version
+ * @description: creates a new HTTP request with method, path and version
  * 
  * @param method: the HTTP request method, GET, POST, etc
  * @param path: the HTTP request path, / ,/index.html
@@ -96,6 +96,40 @@ const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name);
  */
 WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
                                  WHttpVersion version);
+
+/*
+ * @description: appends a new HTTP header to the WHttpRequest.
+ *               If the header with name already exists, its value will be replaced
+ * 
+ * @param name: the name of HTTP header
+ * @param value: the value of HTTP header
+ */
+void w_http_request_append(WHttpRequest * req, const char *name,
+                           const char *value);
+
+
+/*
+ * @description: gets the HTTP headers of WHttpRequest
+ * 
+ */
+WHttpHeaders *w_http_request_get_headers(WHttpRequest * req);
+
+/*
+ * @description: gets the method of WHttpRequest
+ */
+WHttpMethod w_http_request_get_method(WHttpRequest * req);
+
+/*
+ * @description: gets the path of WHttpRequest
+ */
+const char *w_http_request_get_path(WHttpRequest * req);
+
+/*
+ * @description: gets the version of HTTP
+ */
+WHttpVersion w_http_request_get_version(WHttpRequest * req);
+
+
 WHttpRequest *w_http_request_new_from_data(const char *data);
 
 

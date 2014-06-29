@@ -115,6 +115,38 @@ WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
     return req;
 }
 
+void w_http_request_append(WHttpRequest * req, const char *name,
+                           const char *value)
+{
+    W_RETURN_IF_FAIL(req != NULL && name != NULL && value != NULL);
+
+    w_http_headers_append(req->hdrs, name, value);
+}
+
+WHttpHeaders *w_http_request_get_headers(WHttpRequest * req)
+{
+    W_RETURN_VAL_IF_FAIL(req != NULL, NULL);
+    return req->hdrs;
+}
+
+WHttpMethod w_http_request_get_method(WHttpRequest * req)
+{
+    return req->method;
+}
+
+const char *w_http_request_get_path(WHttpRequest * req)
+{
+    return req->path;
+}
+
+/*
+ * @description: gets the version of HTTP
+ */
+WHttpVersion w_http_request_get_version(WHttpRequest * req)
+{
+    return req->version;
+}
+
 WHttpRequest *w_http_request_new_from_data(const char *data)
 {
     /* TODO */
