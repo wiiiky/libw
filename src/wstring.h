@@ -112,4 +112,8 @@ void w_string_append(WString * string, const char *data);
 void w_string_append_char(WString * string, char ch);
 
 
+char *w_string_free(WString * string);
+void w_string_free_full(WString * string);
+
+
 #endif

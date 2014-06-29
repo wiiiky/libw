@@ -174,3 +174,16 @@ void w_string_append_char(WString * string, char ch)
     w_string_enlarge(string, 1);
     w_string_append_char_internal(string, ch);
 }
+
+char *w_string_free(WString * string)
+{
+    char *data = string->data;
+    w_free(string);
+    return data;
+}
+
+void w_string_free_full(WString * string)
+{
+    w_free(string->data);
+    w_free(string);
+}
