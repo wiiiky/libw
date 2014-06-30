@@ -134,16 +134,15 @@ WString *w_string_new_with_data(const char *data)
     return string;
 }
 
-static inline void w_string_enlarge_internal(WString * string)
-{
-    string->allocated_len = string->allocated_len << 1;
-    string->data = realloc(string->data, string->allocated_len);
-}
-
 static inline void w_string_enlarge(WString * string, unsigned int len)
 {
-    while (w_string_get_odd(string) <= len) {
-        w_string_enlarge_internal(string);
+    if (w_string_get_odd(string) <= len) {
+        do {
+            string->allocated_len <<= 1;
+        } while (w_string_get_odd(string) <= len);
+        string->data =
+            (char *) realloc(string->data,
+                             sizeof(char) * string->allocated_len);
     }
 }
 
