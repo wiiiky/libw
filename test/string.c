@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     w_string_append_char(string, '\n');
     printf("%s", w_string_free(string));
     string = w_string_new_with_data("hello all!\n");
+    w_string_append_printf(string, "\t%s:%d:%f\n", "WTF", 23, 123.123);
     printf("%s", w_string_free(string));
     return 0;
 }

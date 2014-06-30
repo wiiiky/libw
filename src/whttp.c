@@ -30,8 +30,7 @@ struct _WHttpHeaders {
 };
 
 struct _WHttpBody {
-    char *data;
-    unsigned int length;
+    WString *data;
 };
 
 struct _WHttpRequest {
@@ -115,12 +114,39 @@ const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name)
 WHttpBody *w_http_body_new()
 {
     WHttpBody *body = (WHttpBody *) malloc(sizeof(WHttpBody));
+    body->data = w_string_new();
     return body;
 }
 
-WHttpBody *w_http_body_new_from_data(const char *data);
-const char *w_http_body_get_data(WHttpBody * body);
-unsigned int w_http_body_get_length(WHttpBody * body);
+WHttpBody *w_http_body_new_from_data(const char *data)
+{
+    WHttpBody *body = (WHttpBody *) malloc(sizeof(WHttpBody));
+    body->data = w_string_new_with_data(data);
+    return body;
+}
+
+char *w_http_body_free(WHttpBody * body)
+{
+    char *data = w_string_free(body->data);
+    w_free(body);
+    return data;
+}
+
+void w_http_body_free_full(WHttpBody * body)
+{
+    w_string_free_full(body->data);
+    w_free(body);
+}
+
+const char *w_http_body_get_data(WHttpBody * body)
+{
+    return w_string_get_data(body->data);
+}
+
+unsigned int w_http_body_get_length(WHttpBody * body)
+{
+    return w_string_get_length(body->data);
+}
 
 
 /***************************** WHttpRequest **********************************/
@@ -132,7 +158,16 @@ WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
     req->path = strdup(path);
     req->version = version;
     req->hdrs = w_http_headers_new();
+    req->body = w_http_body_new();
     return req;
+}
+
+void w_http_request_free(WHttpRequest * req)
+{
+    w_free(req->path);
+    w_http_headers_free(req->hdrs);
+    w_http_body_free_full(req->body);
+    w_free(req);
 }
 
 void w_http_request_append(WHttpRequest * req, const char *name,
@@ -149,6 +184,11 @@ WHttpHeaders *w_http_request_get_headers(WHttpRequest * req)
     return req->hdrs;
 }
 
+WHttpBody *w_http_request_get_body(WHttpRequest * req)
+{
+    return req->body;
+}
+
 WHttpMethod w_http_request_get_method(WHttpRequest * req)
 {
     return req->method;
@@ -159,9 +199,6 @@ const char *w_http_request_get_path(WHttpRequest * req)
     return req->path;
 }
 
-/*
- * @description: gets the version of HTTP
- */
 WHttpVersion w_http_request_get_version(WHttpRequest * req)
 {
     return req->version;

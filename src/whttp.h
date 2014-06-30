@@ -91,6 +91,8 @@ const char *w_http_headers_get(WHttpHeaders * hdrs, const char *name);
  */
 WHttpBody *w_http_body_new();
 WHttpBody *w_http_body_new_from_data(const char *data);
+char *w_http_body_free(WHttpBody * body);
+void w_http_body_free_full(WHttpBody * body);
 const char *w_http_body_get_data(WHttpBody * body);
 unsigned int w_http_body_get_length(WHttpBody * body);
 
@@ -106,6 +108,11 @@ unsigned int w_http_body_get_length(WHttpBody * body);
  */
 WHttpRequest *w_http_request_new(WHttpMethod method, const char *path,
                                  WHttpVersion version);
+
+/*
+ * @description: destroys the WHttpRequest and free all resource related
+ */
+void w_http_request_free(WHttpRequest * req);
 
 /*
  * @description: appends a new HTTP header to the WHttpRequest.
@@ -138,6 +145,12 @@ const char *w_http_request_get_path(WHttpRequest * req);
  * @description: gets the version of HTTP
  */
 WHttpVersion w_http_request_get_version(WHttpRequest * req);
+
+
+/*
+ * @description: gets the HTTP message body
+ */
+WHttpBody *w_http_request_get_body(WHttpRequest * req);
 
 /*
  * @description: parses the data to create WHttpRequest.

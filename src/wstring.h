@@ -18,6 +18,8 @@
 #ifndef __W_WSTRING_H__
 #define __W_WSTRING_H__
 
+#include <stdarg.h>
+
 /*
  * string and memory functions
  */
@@ -55,6 +57,8 @@ char *w_strndup(const char *str, int n);
  *				must be less than 1024.
  */
 char *w_strdup_printf(const char *format, ...);
+
+char *w_strdup_vprintf(const char *format, va_list args);
 
 
 /*
@@ -110,6 +114,11 @@ unsigned int w_string_get_length(WString * string);
 
 void w_string_append(WString * string, const char *data);
 void w_string_append_char(WString * string, char ch);
+
+
+void w_string_append_printf(WString * string, const char *format, ...);
+void w_string_append_vprintf(WString * string, const char *format,
+                             va_list args);
 
 
 char *w_string_free(WString * string);

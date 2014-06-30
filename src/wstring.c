@@ -43,15 +43,24 @@ char *w_strdup_printf(const char *format, ...)
     W_RETURN_VAL_IF_FAIL(format != NULL, NULL);
 
     va_list vl;
-    char buf[LARGE_BUF];
+    char *str;
 
     va_start(vl, format);
 
-    vsnprintf(buf, LARGE_BUF, format, vl);
+    str = w_strdup_vprintf(format, vl);
 
     va_end(vl);
 
-    return w_strdup(buf);
+    return str;
+}
+
+char *w_strdup_vprintf(const char *format, va_list args)
+{
+    W_RETURN_VAL_IF_FAIL(format != NULL, NULL);
+
+    char *str = (char *) malloc(sizeof(char) * LARGE_BUF);
+    vsnprintf(str, LARGE_BUF, format, args);
+    return str;
 }
 
 int w_strcmp0(const char *s1, const char *s2)
@@ -173,6 +182,27 @@ void w_string_append_char(WString * string, char ch)
 {
     w_string_enlarge(string, 1);
     w_string_append_char_internal(string, ch);
+}
+
+void w_string_append_printf(WString * string, const char *format, ...)
+{
+    va_list vl;
+
+    va_start(vl, format);
+
+    w_string_append_vprintf(string, format, vl);
+
+    va_end(vl);
+}
+
+void w_string_append_vprintf(WString * string, const char *format,
+                             va_list args)
+{
+    char *str = w_strdup_vprintf(format, args);
+
+    w_string_append(string, str);
+
+    free(str);
 }
 
 char *w_string_free(WString * string)
