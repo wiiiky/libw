@@ -120,7 +120,7 @@ void w_string_append_printf(WString * string, const char *format, ...);
 void w_string_append_vprintf(WString * string, const char *format,
                              va_list args);
 
-int w_string_equal(const WString * s1, const String * s2);
+int w_string_equal(const WString * s1, const WString * s2);
 
 
 char *w_string_free(WString * string);

@@ -189,6 +189,16 @@ WHttpBody *w_http_request_get_body(WHttpRequest * req)
     return req->body;
 }
 
+const char *w_http_request_get_body_data(WHttpRequest * req)
+{
+    return w_http_body_get_data(req->body);
+}
+
+unsigned int w_http_request_get_body_length(WHttpRequest * req)
+{
+    return w_http_body_get_length(req->body);
+}
+
 WHttpMethod w_http_request_get_method(WHttpRequest * req)
 {
     return req->method;

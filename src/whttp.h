@@ -151,6 +151,8 @@ WHttpVersion w_http_request_get_version(WHttpRequest * req);
  * @description: gets the HTTP message body
  */
 WHttpBody *w_http_request_get_body(WHttpRequest * req);
+const char *w_http_request_get_body_data(WHttpRequest * req);
+unsigned int w_http_request_get_body_length(WHttpRequest * req);
 
 /*
  * @description: parses the data to create WHttpRequest.
