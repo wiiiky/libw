@@ -204,6 +204,11 @@ void w_string_append_vprintf(WString * string, const char *format,
     free(str);
 }
 
+int w_string_equal(const WString * s1, const String * s2)
+{
+    return w_strcmp0(s1->data, s2->data) == 0;
+}
+
 char *w_string_free(WString * string)
 {
     char *data = string->data;
