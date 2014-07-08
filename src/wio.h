@@ -90,5 +90,12 @@ int w_readline(int fd, void *buf, unsigned int count);
  */
 int w_readline_buffer(void *buf, unsigned int count);
 
+/*
+ * @description: reads input from terminal without echoing
+ * 
+ * @return: the pointer to the new allocated buffer,or NULL on error
+ */
+char *w_readpass(const char *prompt);
+
 
 #endif

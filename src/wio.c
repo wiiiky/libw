@@ -24,6 +24,8 @@
 #include <errno.h>
 #include <pthread.h>
 #include <string.h>
+#include <signal.h>
+#include <termios.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -112,7 +114,7 @@ int w_is_fd_fifo(int fd)
     return w_is_fd_type_internal(fd, S_IFIFO);
 }
 
-/************************readline***********************************/
+/************************ READLINE ***********************************/
 typedef struct {
     unsigned int size;          /* total size */
     unsigned int start;         /* the start position of buffer */
@@ -303,4 +305,56 @@ int w_readline_buffer(void *buf, unsigned int count)
     ReadlineBuf *lbuf = get_pthread_data();
 
     return readline_buf_copyall(lbuf, buf, count);
+}
+
+/***********************END of READLINE ***********************/
+
+#define MAX_PASS_LEN    (128)
+char *w_readpass(const char *prompt)
+{
+    char buf[MAX_PASS_LEN];
+    char *ptr;
+    sigset_t sig, osig;
+    struct termios ts, ots;
+    FILE *fp;
+    int c;
+
+    if ((fp = fopen(ctermid(NULL), "r+")) == NULL) {
+        return NULL;
+    }
+    setbuf(fp, NULL);
+
+    sigemptyset(&sig);
+    sigaddset(&sig, SIGINT);    /* CTRL_C */
+    sigaddset(&sig, SIGTSTP);   /* CTRL_Z */
+    if (sigprocmask(SIG_BLOCK, &sig, &osig) != 0) { /* save mask */
+        return NULL;
+    }
+
+    int fd = fileno(fp);
+
+    tcgetattr(fd, &ts);         /* save TTY state */
+    ots = ts;
+    ts.c_lflag &= ~(ECHO | ECHOE | ECHOK | ECHONL);
+    if (tcsetattr(fd, TCSAFLUSH, &ts) != 0) {
+        sigprocmask(SIG_SETMASK, &osig, NULL);
+        return NULL;
+    }
+    fputs(prompt, fp);
+
+    ptr = buf;
+    while ((c = getc(fp)) != EOF && c != '\n' && c != '\r') {
+        if (ptr < &buf[MAX_PASS_LEN]) {
+            *ptr = c;
+            ptr++;
+        }
+    }
+    *ptr = '\0';
+    putc('\n', fp);             /* echo a newline */
+
+    tcsetattr(fd, TCSAFLUSH, &ots);
+    sigprocmask(SIG_SETMASK, &osig, NULL);  /* restore signal mask */
+    fclose(fp);
+
+    return w_strdup(buf);
 }
