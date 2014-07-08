@@ -18,6 +18,10 @@
 #ifndef __W_WHTTP_H__
 #define __W_WHTTP_H__
 
+/*
+ * XXX incomplete
+ */
+
 
 /*
  * HTTP request method

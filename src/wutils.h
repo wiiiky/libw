@@ -15,24 +15,23 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
+#ifndef __W_UTILS_H__
+#define __W_UTILS_H__
 
-#ifndef __W_LIBW_H__
-#define __W_LIBW_H__
+#include <inttypes.h>
+
 
 /*
- * include all headers
+ * @description: if current process have given capabilities
+ *                  return 1,otherwise 0.
  */
+int w_have_capabilities(uint32_t cap);
 
-#include "wstring.h"
-#include "wlist.h"
-#include "wio.h"
-#include "winet.h"
-#include "wlog.h"
-#include "wsort.h"
-#include "whashtable.h"
-#include "wqueue.h"
-#include "wasyncqueue.h"
-#include "whttp.h"
-#include "wutils.h"
+
+/*
+ * @description:
+ */
+void w_sudo(int argc, char **argv);
+
 
 #endif

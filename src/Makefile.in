@@ -124,7 +124,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libw_la_DEPENDENCIES =
 am_libw_la_OBJECTS = wlist.lo wlog.lo wstring.lo whashtable.lo wio.lo \
-	winet.lo wsort.lo wasyncqueue.lo wqueue.lo whttp.lo
+	winet.lo wsort.lo wasyncqueue.lo wqueue.lo whttp.lo wutils.lo
 libw_la_OBJECTS = $(am_libw_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -330,7 +330,8 @@ libw_la_SOURCES = \
 	wsort.c \
 	wasyncqueue.c \
 	wqueue.c \
-	whttp.c
+	whttp.c \
+	wutils.c
 
 libw_la_LDFLAGS = 
 libw_la_LIBADD = 
@@ -346,7 +347,8 @@ include_HEADERS = \
 	wsort.h \
 	wasyncqueue.h \
 	wqueue.h \
-	whttp.h
+	whttp.h \
+	wutils.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libw-0.1.pc
@@ -444,6 +446,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wqueue.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsort.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wstring.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wutils.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
