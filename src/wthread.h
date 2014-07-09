@@ -15,25 +15,19 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
+#ifndef __W_THREAD_H__
+#define __W_THREAD_H__
 
-#ifndef __W_LIBW_H__
-#define __W_LIBW_H__
 
 /*
- * include all headers
+ * @description: gets thread specific data
+ * 
+ * @param len: the size of thread specific data.
+ *             This paramater len is only valid at the first call to this function
+ * 
+ * @return: pointer to thread specific data
  */
+void *w_thread_data(unsigned int len);
 
-#include "wstring.h"
-#include "wlist.h"
-#include "wio.h"
-#include "winet.h"
-#include "wlog.h"
-#include "wsort.h"
-#include "whashtable.h"
-#include "wqueue.h"
-#include "wasyncqueue.h"
-#include "whttp.h"
-#include "wutils.h"
-#include "wthread.h"
 
 #endif

@@ -15,25 +15,31 @@
  * License along with main.c; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
-
-#ifndef __W_LIBW_H__
-#define __W_LIBW_H__
-
-/*
- * include all headers
- */
-
-#include "wstring.h"
-#include "wlist.h"
-#include "wio.h"
-#include "winet.h"
-#include "wlog.h"
-#include "wsort.h"
-#include "whashtable.h"
-#include "wqueue.h"
-#include "wasyncqueue.h"
-#include "whttp.h"
-#include "wutils.h"
 #include "wthread.h"
+#include <pthread.h>
+#include <stdlib.h>
 
-#endif
+
+static pthread_key_t pkey;
+static pthread_once_t ponce = PTHREAD_ONCE_INIT;
+
+static void pthread_free(void *data)
+{
+    free(data);
+}
+
+static void pthread_init(void)
+{
+    (void) pthread_key_create(&pkey, pthread_free);
+}
+
+void *w_thread_data(unsigned int len)
+{
+    pthread_once(&ponce, pthread_init);
+    void *data = pthread_getspecific(pkey);
+    if (data == NULL) {
+        data = malloc(len);
+        (void) pthread_setspecific(pkey, data);
+    }
+    return data;
+}

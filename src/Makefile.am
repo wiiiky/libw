@@ -25,7 +25,8 @@ libw_la_SOURCES = \
 	wasyncqueue.c \
 	wqueue.c \
 	whttp.c \
-	wutils.c
+	wutils.c \
+	wthread.c
 
 libw_la_LDFLAGS = 
 
@@ -46,7 +47,8 @@ include_HEADERS = \
 	wasyncqueue.h \
 	wqueue.h \
 	whttp.h \
-	wutils.h
+	wutils.h \
+	wthread.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libw-0.1.pc

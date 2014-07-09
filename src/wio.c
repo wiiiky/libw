@@ -127,7 +127,7 @@ typedef struct {
 /*
  * initialize the buffer
  */
-ReadlineBuf *readline_buf_init()
+static ReadlineBuf *readline_buf_init()
 {
     ReadlineBuf *buf = w_malloc(sizeof(ReadlineBuf));
     buf->size = DEFAULT_BUFSIZE;
