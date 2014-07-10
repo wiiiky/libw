@@ -17,7 +17,6 @@
  */
 #include "wio.h"
 #include "m4.h"
-#include "wstring.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -129,9 +128,9 @@ typedef struct {
  */
 static ReadlineBuf *readline_buf_init()
 {
-    ReadlineBuf *buf = w_malloc(sizeof(ReadlineBuf));
+    ReadlineBuf *buf = (ReadlineBuf *) malloc(sizeof(ReadlineBuf));
     buf->size = DEFAULT_BUFSIZE;
-    buf->buf = w_malloc(sizeof(char) * DEFAULT_BUFSIZE);
+    buf->buf = malloc(sizeof(char) * DEFAULT_BUFSIZE);
     buf->len = 0;
     buf->start = 0;
     return buf;
@@ -145,8 +144,8 @@ static void readline_buf_free(ReadlineBuf * buf)
     if (buf == NULL) {
         return;
     }
-    w_free(buf->buf);
-    w_free(buf);
+    free(buf->buf);
+    free(buf);
 }
 
 /*
@@ -173,7 +172,7 @@ static void readline_buf_forward(ReadlineBuf * lbuf)
 static void readline_buf_enlarge(ReadlineBuf * buf)
 {
     buf->size = buf->size << 1; /* double */
-    buf->buf = w_realloc(buf->buf, buf->size);
+    buf->buf = realloc(buf->buf, buf->size);
 }
 
 static void readline_buf_make_space(ReadlineBuf * lbuf)
@@ -356,5 +355,5 @@ char *w_readpass(const char *prompt)
     sigprocmask(SIG_SETMASK, &osig, NULL);  /* restore signal mask */
     fclose(fp);
 
-    return w_strdup(buf);
+    return strdup(buf);
 }
