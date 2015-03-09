@@ -191,7 +191,7 @@ int w_hash_table_insert(WHashTable * h, void *key, void *value)
         uint32_t index = w_hash_table_index(h, key);
         node = w_hash_table_node_new(key, value);
         h->buckets[index] = w_list_append(h->buckets[index], node);
-        h->keys = w_list_append(h->keys, key);
+        h->keys = w_list_append(h->keys, node->key);
         return 0;
     }
     /* if already exists, update */
@@ -228,7 +228,7 @@ static inline int w_hash_table_remove_internal(WHashTable * h, void *key,
 
     if (node) {
         uint32_t index = w_hash_table_index(h, key);
-        h->keys = w_list_remove(h->keys, key);
+        h->keys = w_list_remove(h->keys, node->key);
         h->buckets[index] = w_list_remove(h->buckets[index], node);
         w_hash_table_node_free(node, key_func, value_func);
         return 0;
