@@ -6,6 +6,8 @@ libw
 Libw is my C library. It does not depend on any third-pary library. 
 Libw implements some simple data structure and algorithm.
 
+This repository is ***deprecated***.
+
 ###XXX
 Please be aware that libw is not tested fully.
 You may take a risk if you choose to use it in your project.
